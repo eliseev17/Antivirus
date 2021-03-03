@@ -20,7 +20,7 @@ string Messenger::toByteArray(message& msg)
 	offset += sizeof(uint32_t);
 	memcpy(&byteArr[offset], msg.nArr.data(), size * sizeof(uint32_t));
 	offset += size * sizeof(uint32_t);
-	uint32_t size = msg.sArr.size();
+	size = msg.sArr.size();
 	memcpy(&byteArr[offset], &size, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 	for (size_t i = 0; i < size; i++)

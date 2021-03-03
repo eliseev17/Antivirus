@@ -2,7 +2,7 @@
 #include <windows.h>
 #include <string>
 #include <iostream>
-//#include "../CommunicationHelper/Helper.hpp"
+#include "../CommunicationHelper/Helper.hpp"
 
 namespace Client {
 

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-//#include "../CommunicationHelper/Helper.hpp"
+#include "../CommunicationHelper/Helper.hpp"
 
 using namespace std;
 
