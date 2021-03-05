@@ -24,6 +24,7 @@
     <ProjectGuid>{527b7fe1-4e96-4cc9-bb76-197e65d8f3be}</ProjectGuid>
     <RootNamespace>ServerAntivirus</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Service</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -141,11 +142,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\CommunicationHelper\Helper.cpp" />
-    <ClCompile Include="ServerAntivirus.cpp" />
+    <ClCompile Include="..\Helper.cpp" />
+    <ClCompile Include="Service.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\CommunicationHelper\Helper.hpp" />
+    <ClInclude Include="..\Helper.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,44 +1,16 @@
 ﻿#include <windows.h>
 #include <iostream>
-#include <sstream>
-#include <string>
-#include "../CommunicationHelper/Helper.hpp"
+#include "../Helper.hpp"
 
 using namespace std;
 
 #define BUFSIZE 512
 
-// Буфер для передачи данных через канал
-char   szBuf[512];
-
-// Количество байт данных, принятых через канал
-DWORD  cbRead;
-
-// Количество байт данных, переданных через канал
-DWORD  cbWritten;
-
 // Обьявление функций
 DWORD WINAPI InstanceThread(LPVOID);
-string printResult(TCHAR bufferArray[], size_t bufferSize, string output);
-void printResult(TCHAR name[], size_t size);
-void CreateAndSendMessage(HANDLE hPipe, string& temp);
 
 int main()
 {
-    // Результат для проверки захвата мьютекса
-    DWORD res = NULL;
-
-    // создаем объект-взаимоисключение
-    HANDLE mutex = CreateMutex(NULL, FALSE, TEXT("mutex1"));
-    // если он уже существует, CreateMutex вернет дескриптор существующего
-    // объекта, а GetLastError вернет ERROR_ALREADY_EXISTS
-    // в течение 2 секунд пытаемся захватить объект
-    if (mutex != NULL)
-        res = WaitForSingleObject(mutex, 2000);
-
-    if (res == WAIT_TIMEOUT) // если захват не удался
-        return 0;            // закрываем приложение
-
     setlocale(LC_ALL, "ru"); // Подключаем русский язык
 
     // Флаг, показывающий, есть ли соединение
@@ -173,35 +145,16 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 
     // Параметр потока - это дескриптор экземпляра объекта канала.
     hPipe = (HANDLE)lpvParam;
-    string temp = "";
-
-    // Запускаем цикл, пока не призведется чтение файла
-    while (1)
-    {
-
-        // Читаем файл
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //message newmessage = Messenger::readMsg(hPipe, 20);///////////////////////////////////////////////////////////////////
-        //Messenger::sendMsg(hPipe, newmessage.sArr.size(), newmessage);///////////////////////////////////////////////////////////////////
-        fSuccess = ReadFile(hPipe, szBuf, 512, &cbRead, NULL);
-        cout << szBuf << endl;
-        // Если не удалось, выводим ошибку
-        if (!fSuccess)
-        {
-            if (GetLastError() == ERROR_BROKEN_PIPE)
-            {
-                cout << "\nClient" << temp << " отключён" << endl;
-            }
-            else
-            {
-                cout << "Экземпляру потока не удалось совершить чтение файла, код ошибки: " << GetLastError() << endl;
-            }
+    HANDLE mutex;
+    DWORD res;
+    while (1) { //GetLastError() != ERROR_BROKEN_PIPE || mutex != NULL
+        mutex = CreateMutex(NULL, FALSE, TEXT("mutex1"));
+        if (GetLastError() == ERROR_ALREADY_EXISTS) {
+            message newmessage = Messenger::readMsg(hPipe, sizeof(message));
+            Messenger::sendMsg(hPipe, sizeof(message), newmessage);
+        }
+        else
             break;
-        }
-
-        else {
-            CreateAndSendMessage(hPipe, temp);
-        }
     }
 
     // "Чистим" канал, чтобы клиент мог прочитать его содержимое
@@ -215,69 +168,6 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
     HeapFree(hHeap, 0, pchRequest);
     HeapFree(hHeap, 0, pchReply);
 
-    cout << "Экземпляр потока №" << temp << " завершил работу" << endl;
+    cout << "Экземпляр потока завершил работу" << endl;
     return 1;
-}
-
-
-// Вспомогательные функции для получения системной информации
-string printResult(TCHAR bufferArray[], size_t bufferSize, string output) {
-    for (size_t i = 0; i < bufferSize; ++i)
-        if (*(bufferArray + i) == '\0')
-            break;
-        else
-            output += static_cast<char>(*(bufferArray + i));
-    output += "\n";
-    return output;
-}
-
-void printResult(TCHAR name[], size_t size) {
-    for (size_t i = 0; i < size; ++i)
-        if (*(name + i) == '\0')
-            break;
-        else
-            cout << static_cast<char>(*(name + i));
-    cout << endl;
-}
-
-void CreateAndSendMessage(HANDLE hPipe, string& temp) {
-    temp = to_string(szBuf[0]);
-    string output = "Имя компьютера: ";
-
-    // имя компьютера
-    size_t bufferSize = MAX_COMPUTERNAME_LENGTH + 1;
-    TCHAR* bufferArray = new TCHAR[bufferSize];
-    GetComputerName(bufferArray, (LPDWORD)&bufferSize);
-    output = printResult(bufferArray, bufferSize, output);
-
-    // имя пользователя
-    bufferSize = MAX_PATH;
-    bufferArray = new TCHAR[bufferSize];
-    GetUserName(bufferArray, (LPDWORD)&bufferSize);
-    output += "Имя пользователя: ";
-    output = printResult(bufferArray, bufferSize, output);
-
-    // версия системы
-    OSVERSIONINFO wINFO{ 0 };
-    wINFO.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-    //GetVersionEx((OSVERSIONINFO*)&wINFO);
-    output += "Версия ОС: ";
-    stringstream ss;
-    ss << wINFO.dwMajorVersion;
-    output += ss.str();
-    output += "\n";
-    output += "Версия ОС (минорная): ";
-    stringstream ss2;
-    ss2 << wINFO.dwMinorVersion;
-    output += ss2.str();
-    output += "\n";
-    output += "\n";
-
-    // Конвертируем string в char*
-    strcpy_s(szBuf, output.c_str());
-    
-    // Посылаем итоговый массив символов клиентскому приложению
-    if (!WriteFile(hPipe, szBuf, strlen(szBuf) + 1, &cbWritten, NULL))
-        cout << "Ошибка записи данных" << endl;
-    cout << endl << "Данные успешно записаны в Client" << temp << "!" << endl;
 }

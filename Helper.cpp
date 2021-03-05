@@ -1,7 +1,7 @@
 #include "Helper.hpp"
-using namespace std;
 
-string Messenger::toByteArray(message& msg)
+
+std::string Messenger::toByteArray(message& msg)
 {
 	uint32_t msgSize = 0, offset = 0;
 	msgSize += sizeof(msg.cmd) + sizeof(uint32_t) + sizeof(uint32_t) * msg.nArr.size();
@@ -11,7 +11,7 @@ string Messenger::toByteArray(message& msg)
 		msgSize += sizeof(uint32_t);
 		msgSize += msg.sArr.at(i).size() + 1;
 	}
-	string byteArr;
+	std::string byteArr;
 	byteArr.resize(msgSize);
 	memcpy(&byteArr[offset], &msg.cmd, sizeof(msg.cmd));
 	offset += sizeof(msg.cmd);
@@ -36,9 +36,11 @@ string Messenger::toByteArray(message& msg)
 	return byteArr;
 }
 
-message Messenger::fromByteArray(string str)
+message Messenger::fromByteArray(std::string str)
 {
 	message tempMsg;
+	if (str == "")
+		return tempMsg;
 	uint32_t offset = 0, size = 0;
 	memcpy(&tempMsg.cmd, &str[offset], sizeof(tempMsg.cmd));
 	offset += sizeof(tempMsg.cmd);
@@ -66,9 +68,9 @@ message Messenger::fromByteArray(string str)
 
 void Messenger::sendMsg(HANDLE pipe, size_t size, message& msg)
 {
-	string str = toByteArray(msg);
+	std::string str = toByteArray(msg);
 	uint32_t strSize = str.size();
-	string header;
+	std::string header;
 	header.resize(sizeof(strSize));
 	memcpy(header.data(), &strSize, sizeof(strSize));
 	str = header + str;
@@ -76,7 +78,7 @@ void Messenger::sendMsg(HANDLE pipe, size_t size, message& msg)
 	uint32_t offset = 0;
 	size_t lim = (strSize + strSize % size) / size;
 	lim = lim == 0 ? 1 : lim;
-	for (size_t i = 0; i < lim - 1; ++i)
+	for (size_t i = 0; i < lim ; ++i)
 	{
 		WriteFile(pipe, &str[offset], size, NULL, 0);
 		offset += size;
@@ -85,7 +87,7 @@ void Messenger::sendMsg(HANDLE pipe, size_t size, message& msg)
 
 message Messenger::readMsg(HANDLE pipe, size_t size)
 {
-	string msg;
+	std::string msg;
 	msg.resize(size);
 	ReadFile(pipe, &msg[0], size, NULL, 0);
 	uint32_t strSize;
