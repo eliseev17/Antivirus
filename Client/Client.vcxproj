@@ -80,11 +80,13 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\elisi\source\repos\Antivirus\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies />
+      <AdditionalDependencies>Library.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>Main</EntryPointSymbol>
+      <AdditionalLibraryDirectories>C:\Users\elisi\source\repos\Antivirus\$(IntDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy app.config "$(TargetPath).config"</Command>
@@ -128,11 +130,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Helper.cpp" />
     <ClCompile Include="ClientForm.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Helper.hpp" />
     <ClInclude Include="ClientForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>

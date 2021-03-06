@@ -1,6 +1,6 @@
 ﻿#include <windows.h>
 #include <iostream>
-#include "../Helper.hpp"
+#include "Library.h"
 
 using namespace std;
 
@@ -146,12 +146,11 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
     // Параметр потока - это дескриптор экземпляра объекта канала.
     hPipe = (HANDLE)lpvParam;
     HANDLE mutex;
-    DWORD res;
     while (1) { //GetLastError() != ERROR_BROKEN_PIPE || mutex != NULL
         mutex = CreateMutex(NULL, FALSE, TEXT("mutex1"));
         if (GetLastError() == ERROR_ALREADY_EXISTS) {
-            message newmessage = Messenger::readMsg(hPipe, sizeof(message));
-            Messenger::sendMsg(hPipe, sizeof(message), newmessage);
+            message newmessage = Messenger::readMessage(hPipe, sizeof(message));
+            Messenger::sendMessage(hPipe, sizeof(message), newmessage);
         }
         else
             break;

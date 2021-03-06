@@ -1,5 +1,7 @@
-#include "Helper.hpp"
-
+#include "pch.h"
+#include "Library.h"
+#include <utility>
+#include <limits.h>
 
 std::string Messenger::toByteArray(message& msg)
 {
@@ -66,7 +68,7 @@ message Messenger::fromByteArray(std::string str)
 	return tempMsg;
 }
 
-void Messenger::sendMsg(HANDLE pipe, size_t size, message& msg)
+void Messenger::sendMessage(HANDLE pipe, size_t size, message& msg)
 {
 	std::string str = toByteArray(msg);
 	uint32_t strSize = str.size();
@@ -78,14 +80,14 @@ void Messenger::sendMsg(HANDLE pipe, size_t size, message& msg)
 	uint32_t offset = 0;
 	size_t lim = (strSize + strSize % size) / size;
 	lim = lim == 0 ? 1 : lim;
-	for (size_t i = 0; i < lim ; ++i)
+	for (size_t i = 0; i < lim; ++i)
 	{
 		WriteFile(pipe, &str[offset], size, NULL, 0);
 		offset += size;
 	}
 }
 
-message Messenger::readMsg(HANDLE pipe, size_t size)
+message Messenger::readMessage(HANDLE pipe, size_t size)
 {
 	std::string msg;
 	msg.resize(size);
@@ -101,6 +103,5 @@ message Messenger::readMsg(HANDLE pipe, size_t size)
 		WriteFile(pipe, &msg[offset], size, NULL, 0);
 		offset += size;
 	}
-
 	return fromByteArray(msg.substr(sizeof(strSize)));
 }

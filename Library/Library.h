@@ -4,8 +4,6 @@
 #include <string>
 #include <cstdint>
 
-//using namespace std;
-
 enum class COMMAND : uint32_t { START, STOP, MOVE, DEL };
 
 struct message
@@ -18,9 +16,9 @@ struct message
 class Messenger
 {
 private:
-	static std::string toByteArray(message& msg);
-	static message fromByteArray(std::string str);
+	static std::string toByteArray (message& msg);
+	static message fromByteArray (std::string str);
 public:
-	static void sendMsg(HANDLE pipe, size_t size, message& msg);
-	static message readMsg(HANDLE pipe, size_t size);
+	static void sendMessage(HANDLE pipe, size_t size, message& msg);
+	static message readMessage(HANDLE pipe, size_t size);
 };

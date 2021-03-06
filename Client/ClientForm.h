@@ -1,7 +1,7 @@
 #pragma once
+
 #include <windows.h>
-//#include <string>
-#include "../Helper.hpp"
+#include "Library.h"
 
 HANDLE hPipe = NULL;
 
@@ -23,14 +23,7 @@ namespace Client {
 		ClientForm(void)
 		{
 			HANDLE mutex = CreateMutex(NULL, FALSE, TEXT("mutex1"));
-			// если он уже существует, CreateMutex вернет дескриптор существующего
-			// объекта, а GetLastError вернет ERROR_ALREADY_EXISTS
-			// в течение 2 секунд пытаемся захватить объект
-			//if (mutex != NULL)
-			//	res = WaitForSingleObject(mutex, 2000);
 
-			//if (res == WAIT_TIMEOUT) // если захват не удался
-			//	return 0;            // закрываем приложение
 			InitializeComponent();
 			//
 			//TODO: добавьте код конструктора
@@ -123,9 +116,6 @@ namespace Client {
 
 		}
 #pragma endregion
-		
-		//BOOL   fSuccess = FALSE;
-		//DWORD  cbRead, cbToWrite, cbWritten, dwMode;
 
 		void MarshalString(String^ s, std::string& os) {
 			using namespace Runtime::InteropServices;
@@ -151,7 +141,6 @@ namespace Client {
 
 		if (hPipe == INVALID_HANDLE_VALUE)
 		{
-			//std::cout << "Не могу открыть канал, код ошибки = " << "INVALID_HANDLE_VALUE\n" << endl;
 			CloseHandle(hPipe);
 			hPipe = NULL;
 		}
@@ -159,7 +148,6 @@ namespace Client {
 		// Exit if an error other than ERROR_PIPE_BUSY occurs.
 		if (GetLastError() == ERROR_PIPE_BUSY)
 		{
-			//std::cout << "Не могу открыть канал, код ошибки = " << "ERROR_PIPE_BUSY\n" << endl;
 			CloseHandle(hPipe);
 			hPipe = NULL;
 		}
@@ -172,8 +160,8 @@ namespace Client {
 		message newMessage;
 		newMessage.cmd = COMMAND::START;
 		newMessage.sArr.push_back(text);
-		Messenger::sendMsg(hPipe, sizeof(message), newMessage);
-		message newMessage2 = Messenger::readMsg(hPipe, sizeof(message));
+		Messenger::sendMessage(hPipe, sizeof(message), newMessage);
+		message newMessage2 = Messenger::readMessage(hPipe, sizeof(message));
 		std::string s = newMessage2.sArr.at(0);
 		String^ textbox2 = gcnew String(s.c_str());
 		textBox2->Text += textbox2 + "\r\n";
