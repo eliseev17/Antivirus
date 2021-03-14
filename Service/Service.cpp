@@ -1,7 +1,7 @@
 ﻿#include <windows.h>
 #include <iostream>
 #include "Library.h"
-#include "sqlite3.h"
+#include <sqlite3.h>
 
 using namespace std;
 
