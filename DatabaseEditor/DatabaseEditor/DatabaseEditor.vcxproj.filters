@@ -26,10 +26,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="MyForm.resx">
-      <Filter>Файлы ресурсов</Filter>
-    </EmbeddedResource>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

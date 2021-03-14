@@ -1,18 +1,49 @@
 ﻿#include <windows.h>
 #include <iostream>
 #include "Library.h"
+#include "sqlite3.h"
 
 using namespace std;
 
 #define BUFSIZE 512
 
 // Обьявление функций
+static int callback(void* NotUsed, int argc, char** argv, char** azColName) {
+    int i;
+    for (i = 0; i < argc; i++) {
+        printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+    }
+    printf("\n");
+    return 0;
+}
+
+void SQLiteConnect() {
+    const char* SQL = "SELECT * FROM ENTRIES;"; \
+    sqlite3* db = 0; // хэндл объекта соединение к БД
+    int rc = 0;
+    char* err;
+    sqlite3_stmt* result;
+    // открываем соединение
+    if (sqlite3_open("C:\\Users\\elisi\\source\\repos\\Antivirus\\AntimalwareDatabase.db", &db))
+        fprintf(stderr, "Ошибка открытия/создания БД: %s\n", sqlite3_errmsg(db));
+    // выполняем SQL
+    cout << "В Ы П О Л Н Е Н И Е   З А П Р О С А   S Q L :\n" << endl;
+    rc = sqlite3_exec(db, SQL, callback, &result, &err);
+    // Compruebo que no hay error
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "Error: %s.\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return;
+    }
+    sqlite3_close(db);
+}
+
 DWORD WINAPI InstanceThread(LPVOID);
 
 int main()
 {
     setlocale(LC_ALL, "ru"); // Подключаем русский язык
-
+    SQLiteConnect();
     // Флаг, показывающий, есть ли соединение
     BOOL   fConnected = FALSE;
 
@@ -141,8 +172,7 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
     }
 
     // печатаем сообщение
-    cout << "Поток создан, получение и обработка сообщений...";
-
+    cout << "Поток создан, получение и обработка сообщений...\n";
     // Параметр потока - это дескриптор экземпляра объекта канала.
     hPipe = (HANDLE)lpvParam;
     HANDLE mutex;
@@ -150,6 +180,7 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
         mutex = CreateMutex(NULL, FALSE, TEXT("mutex1"));
         if (GetLastError() == ERROR_ALREADY_EXISTS) {
             message newmessage = Messenger::readMessage(hPipe, sizeof(message));
+            cout << "Сервер получил от клиента: " << newmessage.sArr.at(0) << endl;
             Messenger::sendMessage(hPipe, sizeof(message), newmessage);
         }
         else

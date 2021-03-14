@@ -88,7 +88,7 @@ namespace DatabaseEditor {
 			// 
 			this->openFD->FileName = L"AntimalwareDatabase.db";
 			this->openFD->Filter = L"Ôàéëû ÁÄ (*.db)|*.db";
-			this->openFD->InitialDirectory = L"D:\\SQLiteDatabaseBrowserPortable\\";
+			this->openFD->InitialDirectory = L"C:\\Users\\elisi\\source\\repos\\Antivirus";
 			// 
 			// dataGridView1
 			// 
@@ -375,8 +375,8 @@ private: System::Void btnRemove_Click(System::Object^ sender, System::EventArgs^
 }
 
 private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
-	if (openFD->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
-		String^ fileName = openFD->FileName;
+	//if (openFD->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+		String^ fileName = "C:\\Users\\elisi\\source\\repos\\Antivirus\\AntimalwareDatabase.db";
 		database = gcnew SQLiteConnection();
 		try
 		{
@@ -392,7 +392,7 @@ private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) 
 		{
 			MessageBox::Show("Error Working SQL: " + e->ToString(), "Exception ...");
 		}
-	}
+	//}
 }
 
 private: void ChangeTxtLocation(int offset) {
