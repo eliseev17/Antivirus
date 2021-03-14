@@ -176,15 +176,13 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
     // Параметр потока - это дескриптор экземпляра объекта канала.
     hPipe = (HANDLE)lpvParam;
     HANDLE mutex;
-    while (1) { //GetLastError() != ERROR_BROKEN_PIPE || mutex != NULL
-        mutex = CreateMutex(NULL, FALSE, TEXT("mutex1"));
-        if (GetLastError() == ERROR_ALREADY_EXISTS) {
-            message newmessage = Messenger::readMessage(hPipe, sizeof(message));
+    //mutex = CreateMutex(NULL, FALSE, TEXT("mutex1"));
+    while (1) { //GetLastError() != ERROR_BROKEN_PIPE || mutex != NULL  //GetLastError() == ERROR_ALREADY_EXISTS
+        message newmessage = Messenger::readMessage(hPipe, sizeof(message));
+        Messenger::sendMessage(hPipe, sizeof(message), newmessage);
+        if (!newmessage.sArr.empty())
             cout << "Сервер получил от клиента: " << newmessage.sArr.at(0) << endl;
-            Messenger::sendMessage(hPipe, sizeof(message), newmessage);
-        }
-        else
-            break;
+        //mutex = CreateMutex(NULL, FALSE, TEXT("mutex1"));
     }
 
     // "Чистим" канал, чтобы клиент мог прочитать его содержимое

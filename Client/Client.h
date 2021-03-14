@@ -4,6 +4,7 @@
 #include "Library.h"
 
 HANDLE hPipe = NULL;
+//HANDLE mutex = NULL;
 
 namespace Client {
 
@@ -22,7 +23,7 @@ namespace Client {
 	public:
 		ClientForm(void)
 		{
-			HANDLE mutex = CreateMutex(NULL, FALSE, TEXT("mutex1"));
+			//mutex = CreateMutex(NULL, FALSE, TEXT("mutex1"));
 
 			InitializeComponent();
 			//
@@ -118,6 +119,7 @@ namespace Client {
 			this->Controls->Add(this->button1);
 			this->Name = L"ClientForm";
 			this->Text = L"ClientForm";
+			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &ClientForm::ClientForm_FormClosed);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -173,5 +175,10 @@ namespace Client {
 		String^ textbox2 = gcnew String(s.c_str());
 		textBox2->Text += textbox2 + "\r\n";
 	}
+
+private: System::Void ClientForm_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
+	CloseHandle(hPipe);
+	//CloseHandle(mutex);
+}
 };
 }
