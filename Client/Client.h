@@ -1,7 +1,8 @@
-#pragma once
+п»ї#pragma once
 
 #include <windows.h>
 #include "Library.h"
+#include <sstream>
 
 HANDLE hPipe = NULL;
 //HANDLE mutex = NULL;
@@ -16,7 +17,7 @@ namespace Client {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Сводка для ClientForm
+	/// РЎРІРѕРґРєР° РґР»СЏ ClientForm
 	/// </summary>
 	public ref class ClientForm : public System::Windows::Forms::Form
 	{
@@ -27,13 +28,13 @@ namespace Client {
 
 			InitializeComponent();
 			//
-			//TODO: добавьте код конструктора
+			//TODO: РґРѕР±Р°РІСЊС‚Рµ РєРѕРґ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР°
 			//
 		}
 
 	protected:
 		/// <summary>
-		/// Освободить все используемые ресурсы.
+		/// РћСЃРІРѕР±РѕРґРёС‚СЊ РІСЃРµ РёСЃРїРѕР»СЊР·СѓРµРјС‹Рµ СЂРµСЃСѓСЂСЃС‹.
 		/// </summary>
 		~ClientForm()
 		{
@@ -50,14 +51,14 @@ namespace Client {
 
 	private:
 		/// <summary>
-		/// Обязательная переменная конструктора.
+		/// РћР±СЏР·Р°С‚РµР»СЊРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР°.
 		/// </summary>
 		System::ComponentModel::Container ^components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Требуемый метод для поддержки конструктора — не изменяйте 
-		/// содержимое этого метода с помощью редактора кода.
+		/// РўСЂРµР±СѓРµРјС‹Р№ РјРµС‚РѕРґ РґР»СЏ РїРѕРґРґРµСЂР¶РєРё РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° вЂ” РЅРµ РёР·РјРµРЅСЏР№С‚Рµ 
+		/// СЃРѕРґРµСЂР¶РёРјРѕРµ СЌС‚РѕРіРѕ РјРµС‚РѕРґР° СЃ РїРѕРјРѕС‰СЊСЋ СЂРµРґР°РєС‚РѕСЂР° РєРѕРґР°.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -73,46 +74,46 @@ namespace Client {
 			this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->button1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button1->Location = System::Drawing::Point(12, 12);
+			this->button1->Location = System::Drawing::Point(12, 45);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(301, 50);
+			this->button1->Size = System::Drawing::Size(490, 40);
 			this->button1->TabIndex = 0;
-			this->button1->Text = L"Отправка сообщения серверу";
+			this->button1->Text = L"РћС‚РїСЂР°РІРєР° СЃРѕРѕР±С‰РµРЅРёСЏ СЃРµСЂРІРµСЂСѓ";
 			this->button1->UseVisualStyleBackColor = false;
 			this->button1->Click += gcnew System::EventHandler(this, &ClientForm::button1_Click);
 			// 
 			// label1
 			// 
-			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(319, 9);
+			this->label1->Location = System::Drawing::Point(12, 88);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(110, 17);
+			this->label1->Size = System::Drawing::Size(490, 17);
 			this->label1->TabIndex = 1;
-			this->label1->Text = L"Ответ сервера:";
+			this->label1->Text = L"РћС‚РІРµС‚ СЃРµСЂРІРµСЂР°:";
+			this->label1->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// textBox1
 			// 
-			this->textBox1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->textBox1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->textBox1->Location = System::Drawing::Point(12, 68);
-			this->textBox1->Multiline = true;
+			this->textBox1->Location = System::Drawing::Point(12, 12);
 			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(301, 54);
+			this->textBox1->Size = System::Drawing::Size(490, 27);
 			this->textBox1->TabIndex = 2;
 			// 
 			// textBox2
 			// 
-			this->textBox2->Location = System::Drawing::Point(319, 29);
+			this->textBox2->Location = System::Drawing::Point(12, 108);
 			this->textBox2->Multiline = true;
 			this->textBox2->Name = L"textBox2";
-			this->textBox2->Size = System::Drawing::Size(183, 194);
+			this->textBox2->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
+			this->textBox2->Size = System::Drawing::Size(490, 242);
 			this->textBox2->TabIndex = 3;
 			// 
 			// ClientForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(514, 362);
+			this->ClientSize = System::Drawing::Size(980, 600);
 			this->Controls->Add(this->textBox2);
 			this->Controls->Add(this->textBox1);
 			this->Controls->Add(this->label1);
@@ -151,17 +152,43 @@ namespace Client {
 		if (hPipe == INVALID_HANDLE_VALUE)
 		{
 			CloseHandle(hPipe);
+			textBox2->Text = GetLastError().ToString();
 			hPipe = NULL;
+			return;
 		}
 
 		// Exit if an error other than ERROR_PIPE_BUSY occurs.
 		if (GetLastError() == ERROR_PIPE_BUSY)
 		{
 			CloseHandle(hPipe);
+			textBox2->Text = GetLastError().ToString();
 			hPipe = NULL;
+			return;
 		}
+
+		if (GetLastError() == ERROR_BROKEN_PIPE)
+		{
+			CloseHandle(hPipe);
+			textBox2->Text = GetLastError().ToString();
+			hPipe = NULL;
+			return;
+		}
+
+		if (GetLastError() == ERROR_FILE_NOT_FOUND)
+		{
+			CloseHandle(hPipe);
+			textBox2->Text = "ERROR_FILE_NOT_FOUND";
+			hPipe = NULL;
+			return;
+		}
+		
+		std::stringstream ss;
+		ss << GetLastError();
+		//String^ s = gcnew String("");
+		//textBox2->Text = gcnew String(ss.str());
+
 		if(textBox2->Text == textBox2->Text->Empty)
-			textBox2->Text = "Соединение установлено\r\n";
+			textBox2->Text = "РЎРѕРµРґРёРЅРµРЅРёРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ\r\n";
 
 		std::string text;
 		MarshalString(textBox1->Text->ToString(), text);

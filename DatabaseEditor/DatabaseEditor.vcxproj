@@ -149,11 +149,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DatabaseEditor.cpp" />
+    <ClCompile Include="SHA256.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DatabaseEditor.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="SHA256.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
