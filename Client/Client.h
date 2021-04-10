@@ -106,7 +106,7 @@ namespace Client {
 			this->textBox2->Multiline = true;
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->textBox2->Size = System::Drawing::Size(490, 242);
+			this->textBox2->Size = System::Drawing::Size(956, 480);
 			this->textBox2->TabIndex = 3;
 			// 
 			// ClientForm
@@ -119,7 +119,7 @@ namespace Client {
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->button1);
 			this->Name = L"ClientForm";
-			this->Text = L"ClientForm";
+			this->Text = L"Лучший в мире антивирус (но это не точно)";
 			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &ClientForm::ClientForm_FormClosed);
 			this->ResumeLayout(false);
 			this->PerformLayout();

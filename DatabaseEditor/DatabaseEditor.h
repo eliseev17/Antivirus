@@ -12,6 +12,7 @@ namespace DatabaseEditor {
 	using namespace System::Drawing;
 	using namespace System::Data::SQLite;
 	using namespace System::Text; 
+	using namespace System::Threading;
 	using namespace System::IO;
 	using namespace cliext;
 
@@ -21,6 +22,7 @@ namespace DatabaseEditor {
 		MyForm(void)
 		{
 			InitializeComponent();
+			Control::CheckForIllegalCrossThreadCalls = false;
 		}
 	private: System::Windows::Forms::Button^ btnRemove;
 	private: System::Windows::Forms::OpenFileDialog^ openFD;
@@ -215,7 +217,6 @@ namespace DatabaseEditor {
 			this->txtSignature->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->txtSignature->Location = System::Drawing::Point(140, 519);
-			this->txtSignature->MaxLength = 8;
 			this->txtSignature->Multiline = true;
 			this->txtSignature->Name = L"txtSignature";
 			this->txtSignature->Size = System::Drawing::Size(260, 24);
@@ -226,7 +227,6 @@ namespace DatabaseEditor {
 			this->txtOffsetBegin->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->txtOffsetBegin->Location = System::Drawing::Point(406, 519);
-			this->txtOffsetBegin->MaxLength = 8;
 			this->txtOffsetBegin->Multiline = true;
 			this->txtOffsetBegin->Name = L"txtOffsetBegin";
 			this->txtOffsetBegin->Size = System::Drawing::Size(112, 24);
@@ -367,26 +367,47 @@ namespace DatabaseEditor {
 			return table;
 		}
 
+		   private: void openDatabase() {
+				
+				try
+				{
+			   dataGridView1->DataSource = fillDataTable();
+				}
+				catch (Exception^ e)
+				{
+					MessageBox::Show("Error Working SQL: " + e->ToString(), "Exception ...");
+				}
+		   }
+		  private: void firstOpenDatabase() {
+			  String^ fileName = "./../AntimalwareDatabase.db";
+			  database = gcnew SQLiteConnection();
+			  try
+			  {
+				  database->ConnectionString = "Data Source=\"" + fileName + "\"";
+				  database->Open();
+				  txtDatabaseFilePath->Text = database->FileName;
+				  DataTable^ table = fillDataTable();
+				  dataGridView1->DataSource = table;
+			  }
+			  catch (Exception^ e)
+			  {
+				  MessageBox::Show("Error Working SQL: " + e->ToString(), "Exception ...");
+			  }
+		  }
+
 	private: System::Void btnViewDatabase_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (openFD->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
-			String^ fileName = openFD->FileName;
-			txtDatabaseFilePath->Text = fileName;
 			database = gcnew SQLiteConnection();
-			try
-			{
-				database->ConnectionString = "Data Source=\"" + fileName + "\"";
-				database->Open();
-
-				DataTable^ table = fillDataTable();
-
-				dataGridView1->DataSource = table;
-			}
-			catch (Exception^ e)
-			{
-				MessageBox::Show("Error Working SQL: " + e->ToString(), "Exception ...");
-			}
+			database->ConnectionString = "Data Source=\"" + openFD->FileName + "\"";
+			database->Open();
+			txtDatabaseFilePath->Text = database->FileName;
+			Thread^ thread = gcnew Thread(gcnew ThreadStart(this, &MyForm::openDatabase));
+			thread->IsBackground = true;
+			thread->Start();
 		}
 	}
+
+
 
 private: System::Void btnAdd_Click(System::Object^ sender, System::EventArgs^ e) {
 	SHA256 sha256;
@@ -446,22 +467,9 @@ private: System::Void btnRemove_Click(System::Object^ sender, System::EventArgs^
 }
 
 private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
-	//if (openFD->ShowDialog() == System::Windows::Forms::DialogResult::OK)
-	String^ fileName = "./../AntimalwareDatabase.db";
-	database = gcnew SQLiteConnection();
-	try
-	{
-		database->ConnectionString = "Data Source=\"" + fileName + "\"";
-		database->Open();
-		txtDatabaseFilePath->Text = database->FileName;
-		DataTable^ table = fillDataTable();
-
-		dataGridView1->DataSource = table;
-	}
-	catch (Exception^ e)
-	{
-		MessageBox::Show("Error Working SQL: " + e->ToString(), "Exception ...");
-	}
+	Thread^ thread = gcnew Thread(gcnew ThreadStart(this, &MyForm::firstOpenDatabase));
+	thread->IsBackground = true;
+	thread->Start();
 }
 private: System::Void btnCreateDatabase_Click(System::Object^ sender, System::EventArgs^ e) {	
 	txtDatabaseFilePath->Clear();

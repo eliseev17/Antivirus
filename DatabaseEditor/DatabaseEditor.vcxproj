@@ -108,11 +108,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\elisi\source\repos\Antivirus\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies />
+      <AdditionalDependencies>Library.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
+      <AdditionalLibraryDirectories>C:\Users\elisi\source\repos\Antivirus\$(IntDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy app.config "$(TargetPath).config"</Command>
@@ -149,13 +151,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DatabaseEditor.cpp" />
-    <ClCompile Include="SHA256.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DatabaseEditor.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="SHA256.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
