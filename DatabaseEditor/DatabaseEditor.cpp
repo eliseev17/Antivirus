@@ -1,4 +1,4 @@
-#include "DatabaseEditor.h"
+#include "DatabaseEditorForm.h"
 using namespace System;
 using namespace System::Windows::Forms;
 [STAThreadAttribute]

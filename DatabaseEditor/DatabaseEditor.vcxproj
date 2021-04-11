@@ -151,18 +151,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DatabaseEditor.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="DatabaseEditor.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
+    <ClCompile Include="DatabaseEditorLogic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DatabaseEditor.resx">
-      <DependentUpon>DatabaseEditor.h</DependentUpon>
+    <ClInclude Include="DatabaseEditorForm.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="DatabaseEditorLogic.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseEditorForm.resx">
+      <DependentUpon>DatabaseEditorForm.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
