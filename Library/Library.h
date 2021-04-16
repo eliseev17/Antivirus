@@ -4,11 +4,15 @@
 #include <string>
 #include <cstdint>
 
-enum class COMMAND : uint32_t { START, STOP, MOVE, DEL };
+enum class COMMAND : uint32_t { START, STOP, MOVE_TO_QUARANTINE, DEL,
+	DELETE_FROM_QUARANTINE, SET_MONITORING, STOP_MONITORING,
+	INT_MESSAGE, STRING_MESSAGE, SCAN_RESULT, UNKNOWN
+
+};
 
 struct message
 {
-	COMMAND cmd;
+	COMMAND cmd = COMMAND::UNKNOWN;
 	std::vector<uint32_t> nArr;
 	std::vector<std::string> sArr;
 };

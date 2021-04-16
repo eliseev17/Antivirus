@@ -12,6 +12,8 @@ SHA256::SHA256() : m_blocklen(0), m_bitlen(0) {
 	m_state[5] = 0x9b05688c;
 	m_state[6] = 0x1f83d9ab;
 	m_state[7] = 0x5be0cd19;
+	for (size_t i = 0; i < sizeof(m_data) / sizeof(uint64_t); i++)	{
+		this->m_data[i] = 0;	}
 }
 
 void SHA256::update(const uint8_t* data, size_t length) {
@@ -61,11 +63,11 @@ uint32_t SHA256::sig1(uint32_t x) {
 }
 
 void SHA256::transform() {
-	uint32_t maj, xorA, ch, xorE, sum, newA, newE, m[64];
-	uint32_t state[8];
+	uint32_t maj, xorA, ch, xorE, sum, newA, newE, m[64] = { 0 };
+	uint32_t state[8] = {0};
 
 	for (uint8_t i = 0, j = 0; i < 16; i++, j += 4) { // Split data in 32 bit blocks for the 16 first words
-		m[i] = (m_data[j] << 24) | (m_data[j + 1] << 16) | (m_data[j + 2] << 8) | (m_data[j + 3]);
+		m[i] = ((uint32_t)m_data[j] << 24) | ((uint32_t)m_data[j + 1] << 16) | ((uint32_t)m_data[j + 2] << 8) | ((uint32_t)m_data[j + 3]);
 	}
 
 	for (uint8_t k = 16; k < 64; k++) { // Remaining 48 blocks
@@ -73,7 +75,7 @@ void SHA256::transform() {
 	}
 
 	for (uint8_t i = 0; i < 8; i++) {
-		state[i] = m_state[i];
+		state[i] = (uint32_t)m_state[i];
 	}
 
 	for (uint8_t i = 0; i < 64; i++) {
@@ -106,7 +108,7 @@ void SHA256::transform() {
 void SHA256::pad() {
 
 	uint64_t i = m_blocklen;
-	uint8_t end = m_blocklen < 56 ? 56 : 64;
+	uint64_t end = m_blocklen < 56 ? 56 : 64;
 
 	m_data[i++] = 0x80; // Append a bit 1
 	while (i < end) {
@@ -154,6 +156,16 @@ std::string SHA256::toString(const uint8_t* digest) {
 
 std::string SHA256::getSHA(const std::string& data)
 {
+	m_state[0] = 0x6a09e667;
+	m_state[1] = 0xbb67ae85;
+	m_state[2] = 0x3c6ef372;
+	m_state[3] = 0xa54ff53a;
+	m_state[4] = 0x510e527f;
+	m_state[5] = 0x9b05688c;
+	m_state[6] = 0x1f83d9ab;
+	m_state[7] = 0x5be0cd19;
+	m_bitlen = 0;
+	m_blocklen = 0;
 	this->update(data);
 	return SHA256::toString(this->digest());
 }

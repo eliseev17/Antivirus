@@ -20,10 +20,10 @@ public:
 
 	std::string getSHA(const std::string& data);
 private:
-	uint8_t  m_data[64];
-	uint32_t m_blocklen;
+	uint64_t  m_data[64];
+	uint64_t m_blocklen;
 	uint64_t m_bitlen;
-	uint32_t m_state[8]; //A, B, C, D, E, F, G, H
+	uint64_t m_state[8]; //A, B, C, D, E, F, G, H
 
 	static constexpr std::array<uint32_t, 64> K = {
 		0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,

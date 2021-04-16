@@ -126,7 +126,7 @@ void checkFile(PCSTR FileName) {
 
 	// - Поиск по сигнатурам
 	bool Detected = false;
-	for (DWORD RecID = 0; RecID RecordCount; RecID++) {
+	for (DWORD RecID = 0; RecID < RecordCount; RecID++) {
 		PSAVRecord Record = &AVRCollection->Record[RecID];
 		// - Если файл слишком маленький, то пропускам запись
 		if (FileSize Signature.Offset + Record->Signature.Lenght)) continue;
