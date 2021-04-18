@@ -9,9 +9,7 @@ Monitoring::Monitoring()
 void Monitoring::start(std::string path, HANDLE pipe, InformationStorage& infoStorage)
 {
 	shouldStop = false;
-	std::wstring wstr(path.begin(), path.end());
-	LPWSTR lpath = const_cast<LPWSTR>((wstr.c_str()));
-	changeHandle = FindFirstChangeNotification(lpath, TRUE, FILE_NOTIFY_CHANGE_FILE_NAME);
+	changeHandle = FindFirstChangeNotificationA(path.c_str(), TRUE, FILE_NOTIFY_CHANGE_FILE_NAME);
 	if (changeHandle == INVALID_HANDLE_VALUE) //Если создать описатель не удалось, значит заданного пути не существует
 	{
 		return;
@@ -29,21 +27,15 @@ void Monitoring::run(std::string path, HANDLE pipe, InformationStorage &infoStor
 	while (TRUE)
 	{
 		WaitForSingleObject(changeHandle, INFINITE);
-
 		if (shouldStop)
 		{
 			CloseHandle(changeHandle);
 			return;
 		}
-
 		Sleep(100);
-
 		startScan(path, pipe, infoStorage);
-
 		CloseHandle(changeHandle);
-		std::wstring wstr(path.begin(), path.end());
-		LPWSTR lpath = const_cast<LPWSTR>((wstr.c_str()));
-		changeHandle = FindFirstChangeNotification(lpath, TRUE, FILE_NOTIFY_CHANGE_FILE_NAME);
+		changeHandle = FindFirstChangeNotificationA(path.c_str(), TRUE, FILE_NOTIFY_CHANGE_FILE_NAME);
 	}
 }
 
