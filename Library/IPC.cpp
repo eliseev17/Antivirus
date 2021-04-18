@@ -1,4 +1,4 @@
-#include "Library.h"
+#include "IPC.h"
 #include <utility>
 #include <limits.h>
 
@@ -10,7 +10,7 @@ std::string Messenger::toByteArray(message& msg)
 	for (size_t i = 0; i < msg.sArr.size(); i++)
 	{
 		msgSize += sizeof(uint32_t);
-		msgSize += (uint32_t)msg.sArr.at(i).size() + 1;
+		msgSize += (uint32_t)msg.sArr.at(i).size(); // +1;
 	}
 	std::string byteArr;
 	byteArr.resize(msgSize);
@@ -26,7 +26,7 @@ std::string Messenger::toByteArray(message& msg)
 	offset += sizeof(uint32_t);
 	for (size_t i = 0; i < size; i++)
 	{
-		uint32_t elSize = (uint32_t)msg.sArr.at(i).size() + 1;
+		uint32_t elSize = (uint32_t)msg.sArr.at(i).size(); //+ 1;
 		memcpy(&byteArr[offset], &elSize, sizeof(uint32_t));
 		offset += sizeof(uint32_t);
 		memcpy(&byteArr[offset], msg.sArr.at(i).data(), elSize);

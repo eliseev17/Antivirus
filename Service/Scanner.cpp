@@ -1,26 +1,15 @@
-#include <filesystem>
-#include <fstream>
 #include "Scanner.h"
-#include <sqlite3.h>
-#include <iostream>
-#include <algorithm>
-#include <zip.h>
-
-#define MZHEADER 0x5a4d
-#define ZIPHEADER 0x04034b50
-#define BUFSIZE 8128
-#define PIPE_BUFSIZE 1024
 
 bool Scanner::shouldStop = false;
 
-message Scanner::scanDirectory(const std::string& path, HANDLE pipe)
+message Scanner::scanDirectory(const std::string& path, HANDLE pipe, InformationStorage& infoStorage)
 {
 	message result;
-	result.cmd = COMMAND::START;
 	namespace fs = std::filesystem;
 	uint64_t numberOfFiles = std::count_if(fs::recursive_directory_iterator(path.data()),
 		fs::recursive_directory_iterator{}, [](auto p) {return fs::is_regular_file(p); });
 	result.nArr.emplace_back(numberOfFiles);
+	result.cmd = COMMAND::START;
 	Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
 	result.nArr.clear();
 	Database db = Database("./../AntimalwareDatabase.db");
@@ -31,13 +20,85 @@ message Scanner::scanDirectory(const std::string& path, HANDLE pipe)
 		if (shouldStop)
 		{
 			result.cmd = COMMAND::STOP;
-			Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
-			break;
+			result.sArr.clear();
+			result.nArr.emplace_back(filesCounter);
+			result.nArr.emplace_back(virusCounter);
+			return result;
 		}
 
 		if (std::filesystem::is_directory(p.path()))
 			continue;
+
 		filesCounter++;
+
+		if (scanFile(p.path().string(), pipe, infoStorage, db))
+			virusCounter++;
+	}
+	result.cmd = COMMAND::SCAN_RESULT;
+	result.sArr.clear();
+	result.nArr.emplace_back(filesCounter);
+	result.nArr.emplace_back(virusCounter);
+	return result;
+}
+
+bool Scanner::scanFile(const std::string& path, HANDLE pipe, InformationStorage& infoStorage, Database db)
+{
+	message result;	
+	result.cmd = COMMAND::START;
+	bool isVirus = false;
+	std::ifstream fileStream(path.c_str(), std::ios::binary);
+	uint16_t mzHeader = 0;
+	uint32_t zipHeader = 0;
+	fileStream.read((char*)&mzHeader, sizeof(uint16_t));
+	fileStream.seekg(0);
+	fileStream.read((char*)&zipHeader, sizeof(uint32_t));
+	fileStream.close();
+	if (!result.sArr.empty())
+		result.sArr.at(0) = path;
+	else
+		result.sArr.emplace_back(path);
+	if (mzHeader == MZHEADER)
+	{
+		size_t res = scanExe(path, db);
+		if (res)
+		{
+			isVirus = true;
+			infoStorage.addThreat(path, "Найден вредонос: " + db.MW_NAME.at(res));
+			result.sArr.emplace_back("Найден вредонос: " + db.MW_NAME.at(res));
+		}
+		else
+			result.sArr.emplace_back("Не опасен");
+	}
+	else if (zipHeader == ZIPHEADER)
+	{
+		size_t res = scanZip(path, db);
+		if (res)
+		{
+			isVirus = true;
+			infoStorage.addThreat(path, "Найден вредонос: опасный ZIP");
+			result.sArr.emplace_back("Найден вредонос: опасный ZIP");
+		}
+		else
+			result.sArr.emplace_back("Не опасен");
+	}
+	else
+		result.sArr.emplace_back("Не исполняемый");
+	Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
+	result.sArr.clear();
+	std::cout << path << '\n';	
+	return isVirus;
+}
+
+size_t Scanner::scanZip(std::string inputPath, Database db)
+{
+	std::cout << "Распаковка: " << inputPath << std::endl;
+	std::string unzipPath = unzip(inputPath);
+	size_t virusCounter = 0, zipVirCounter = 0;
+	namespace fs = std::filesystem;
+	for (auto& p : fs::recursive_directory_iterator(unzipPath.data()))
+	{
+		if (std::filesystem::is_directory(p.path()))
+			continue;
 		std::string path = p.path().string();
 		std::ifstream fileStream(path.c_str(), std::ios::binary);
 		uint16_t mzHeader = 0;
@@ -46,41 +107,21 @@ message Scanner::scanDirectory(const std::string& path, HANDLE pipe)
 		fileStream.seekg(0);
 		fileStream.read((char*)&zipHeader, sizeof(uint32_t));
 		fileStream.close();
-		if (!result.sArr.empty())
-			result.sArr.at(0) = path;
-		else
-			result.sArr.emplace_back(path);		
 		if (mzHeader == MZHEADER)
-		{		
+		{
 			size_t res = scanExe(path, db);
-			if (res) {
+			if (res)
 				virusCounter++;
-				result.sArr.emplace_back("Virus founded: " + db.MW_NAME.at(res));
-			}				
-			else
-				result.sArr.emplace_back("Is safely");
 		}
 		else if (zipHeader == ZIPHEADER)
 		{
-			message scanZipResult = scanZip(path, pipe);
-			filesCounter += scanZipResult.nArr.at(0);
-			virusCounter += scanZipResult.nArr.at(1);
-			result.nArr.clear();
-			continue;
+			zipVirCounter = scanZip(path, db);
 		}
-		else
-		{
-			result.sArr.emplace_back("Not PE");		
-		}	
-		Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
-		std::cout << p.path() << '\n';
-		result.sArr.clear();
 	}
-	result.cmd = COMMAND::SCAN_RESULT;
-	result.sArr.clear();
-	result.nArr.emplace_back(filesCounter);
-	result.nArr.emplace_back(virusCounter);
-	return result;
+	std::filesystem::remove_all(unzipPath);
+	if (virusCounter > 0)
+		zipVirCounter++;
+	return zipVirCounter;
 }
 
 size_t Scanner::scanExe(std::string path, Database db)
@@ -103,18 +144,27 @@ size_t Scanner::scanExe(std::string path, Database db)
 	return resultPosition;
 }
 
-void Scanner::startScan(const std::string& path, HANDLE pipe)
+void Scanner::startScan(const std::string& path, HANDLE pipe, InformationStorage& infoStorage)
 {
 	shouldStop = false;
-	std::filesystem::remove_all("D:\\unpackedFiles");
 	if (std::filesystem::is_directory(path))
 	{
-		message scanResult = scanDirectory(path, pipe);
+		message scanResult = scanDirectory(path, pipe, infoStorage);
 		Messenger::sendMessage(pipe, PIPE_BUFSIZE, scanResult);
 	}
 	else
 	{
-		scanFile(path, pipe);
+		message scanRes;
+		scanRes.cmd = COMMAND::START;
+		scanRes.nArr.emplace_back(1);
+		Messenger::sendMessage(pipe, PIPE_BUFSIZE, scanRes);
+		Database db = Database("./../AntimalwareDatabase.db");
+		scanRes.cmd = COMMAND::SCAN_RESULT;
+		if (scanFile(path, pipe, infoStorage, db))
+			scanRes.nArr.emplace_back(1);
+		else
+			scanRes.nArr.emplace_back(0);
+		Messenger::sendMessage(pipe, PIPE_BUFSIZE, scanRes);
 	}
 }
 
@@ -123,68 +173,13 @@ void Scanner::stopScan()
 	shouldStop = true;
 }
 
-void Scanner::scanFile(const std::string& path, HANDLE pipe)
+std::string Scanner::unzip(const std::string& zipPath)
 {
-	message result;
-	if (shouldStop)
-	{
-		result.cmd = COMMAND::STOP;
-		Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
-		return;
-	}
-	size_t virusCounter = 0;
-	result.cmd = COMMAND::START;
-	uint64_t numberOfFiles = 1;	
-	std::ifstream fileStream(path.c_str(), std::ios::binary);
-
-	uint16_t mzHeader = 0;
-	uint32_t zipHeader = 0;
-
-	fileStream.read((char*)&mzHeader, sizeof(uint16_t));
-	fileStream.seekg(0);
-	fileStream.read((char*)&zipHeader, sizeof(uint32_t));
-	fileStream.close();
-
-	result.nArr.emplace_back(numberOfFiles);
-	Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
-	result.nArr.clear();
-	Database db = Database("./../AntimalwareDatabase.db");
-	if (!result.sArr.empty())
-		result.sArr.at(0) = path;
-	else
-		result.sArr.emplace_back(path);
-	fileStream.close();
-	if (mzHeader == MZHEADER)
-	{
-		size_t res = scanExe(path, db);
-		if (res) {
-			virusCounter++;
-			result.sArr.emplace_back("Virus founded: " + db.MW_NAME.at(res));
-		}
-		else
-			result.sArr.emplace_back("Is safely");
-	}
-	else if (zipHeader == ZIPHEADER)
-	{
-		scanZip(path, pipe);
-	}
-	else
-	{
-		result.sArr.emplace_back("Not PE");
-	}
-	Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
-	result.cmd = COMMAND::SCAN_RESULT;
-	result.nArr.clear();
-	result.sArr.clear();
-	result.nArr.emplace_back(numberOfFiles);
-	result.nArr.emplace_back(virusCounter);
-	Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
-	std::cout << path << '\n';	
-}
-
-bool Scanner::unzip(const std::string& zipPath)
-{
-	std::filesystem::create_directory("D:\\unpackedFiles");
+	const std::string inputFolder = "D:\\unpackedFiles\\";
+	std::filesystem::path zipFileName(zipPath);
+	zipFileName = zipFileName.replace_extension("").filename();
+	std::string pathToZip = inputFolder + zipFileName.string();
+	std::filesystem::create_directory(pathToZip);
 	int err;
 	struct zip* hZip = zip_open(zipPath.c_str(), 0, &err);
 	if (hZip)
@@ -195,31 +190,22 @@ bool Scanner::unzip(const std::string& zipPath)
 			struct zip_stat st;
 			zip_stat_init(&st);
 			zip_stat_index(hZip, i, 0, &st);
-
 			struct zip_file* zf = zip_fopen_index(hZip, i, 0);
 			if (!zf)
 			{
 				zip_close(hZip);
-				return false;
+				return {};
 			}
-
 			std::vector<char> buffer;
 			buffer.resize(st.size);
 			zip_fread(zf, buffer.data(), st.size);
 			zip_fclose(zf);
-			std::string destinationPath = "D:\\unpackedFiles\\";
-			destinationPath += st.name;
-			std::ofstream outfile(destinationPath);
+			std::string destinationPath = pathToZip + "\\" + st.name;
+			std::ofstream outfile(destinationPath, std::ios::binary | std::ios::trunc);
 			outfile.write(buffer.data(), st.size);
 			outfile.close();
 		}
 		zip_close(hZip);
 	}
-	return true;
-}
-
-message Scanner::scanZip(std::string path, HANDLE pipe)
-{
-	unzip(path);
-	return scanDirectory("D:\\unpackedFiles", pipe);
+	return pathToZip;
 }

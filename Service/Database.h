@@ -1,4 +1,5 @@
 #include <sqlite3.h>
+#include "InformationStorage.h"
 #include <cstdint>
 #include <iostream>
 #include <string>
@@ -11,12 +12,16 @@ class Database
 {
 public:
     Database(const char* filePath);
+    Database();
+    Database(const char* filePath, InformationStorage infoStorage);
 
 private:
     //sqlite3* db;
     char* filePath;
     static int callback(void* NotUsed, int argc, char** argv, char** azColName);
     SHA256 shaGen;
+    void createTablesForInfo(InformationStorage infoStorage);
+    void dropTable();
 
 public:
     std::unordered_map<uint64_t, uint64_t> data;
@@ -34,5 +39,6 @@ public:
     bool findSign(uint64_t signature);
     void doSELECTforExample();
     size_t findSignInPartOfBuf(std::string buf, size_t& rowNumber);
+    static InformationStorage getInfo(const char* filePath);
 };
 

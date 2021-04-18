@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Library.h">
+    <ClInclude Include="IPC.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="SHA256.h">
@@ -23,7 +23,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Library.cpp">
+    <ClCompile Include="IPC.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="SHA256.cpp">

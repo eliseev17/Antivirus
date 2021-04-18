@@ -1,9 +1,20 @@
-#include "Database.h"
+﻿#include "Database.h"
 
 Database::Database(const char* filePath)
 {
     this->filePath = (char*)filePath;
     update();
+}
+
+Database::Database()
+{
+
+}
+
+Database::Database(const char* filePath, InformationStorage infoStorage)
+{
+    this->filePath = (char*)filePath;
+    createTablesForInfo(infoStorage);
 }
 
 int Database::callback(void* NotUsed, int argc, char** argv, char** azColName)
@@ -17,6 +28,112 @@ int Database::callback(void* NotUsed, int argc, char** argv, char** azColName)
     return 0;
 }
 
+InformationStorage Database::getInfo(const char* filePath)
+{
+    InformationStorage storage;
+    sqlite3_stmt* stmt;
+    sqlite3* db = 0; // хэндл объекта соединение к БД
+    const char* SQL = "SELECT * FROM THREATS;";
+    if (sqlite3_open(filePath, &db) == SQLITE_OK)
+    {
+        if (sqlite3_prepare_v2(db, SQL, -1, &stmt, 0) == SQLITE_OK)
+        {
+            while (sqlite3_step(stmt) == SQLITE_ROW) //пока в бд есть данные происходит считывание
+            {
+                storage.threatPaths.push_back((char*)sqlite3_column_text(stmt, 0));
+                storage.threatNames.push_back((char*)sqlite3_column_text(stmt, 1));
+            }
+        }
+    }
+    sqlite3_close(db);
+    SQL = "SELECT * FROM QUARANTINE;";
+    if (sqlite3_open(filePath, &db) == SQLITE_OK)
+    {
+        if (sqlite3_prepare_v2(db, SQL, -1, &stmt, 0) == SQLITE_OK)
+        {
+            while (sqlite3_step(stmt) == SQLITE_ROW) //пока в бд есть данные происходит считывание
+            {
+                storage.quarPaths.push_back((char*)sqlite3_column_text(stmt, 0));
+                storage.quarNames.push_back((char*)sqlite3_column_text(stmt, 1));
+            }
+        }
+    }
+    sqlite3_close(db);
+    return storage;
+}
+
+void Database::dropTable()
+{
+    sqlite3* db = 0; // хэндл объекта соединение к БД
+    sqlite3_open(this->filePath, &db);
+    std::string createQuery = "DROP TABLE IF EXISTS \"THREATS\";";
+    sqlite3_stmt* createStmt;
+    sqlite3_prepare_v2(db, createQuery.c_str(), createQuery.size(), &createStmt, NULL);
+    if (sqlite3_step(createStmt) != SQLITE_DONE) return;//cout << "Didn't Create Table!" << endl;
+
+    sqlite3_close(db);
+
+    sqlite3* db1 = 0; // хэндл объекта соединение к БД
+    sqlite3_open(this->filePath, &db1);
+    createQuery = "DROP TABLE IF EXISTS \"QUARANTINE\";";
+    sqlite3_stmt* createStmt1;
+    sqlite3_prepare_v2(db1, createQuery.c_str(), createQuery.size(), &createStmt1, NULL);
+    if (sqlite3_step(createStmt1) != SQLITE_DONE) return;//cout << "Didn't Create Table!" << endl;
+
+    sqlite3_close(db);
+}
+
+void Database::createTablesForInfo(InformationStorage infoStorage)
+{
+    //TODO DROP TABLE
+    dropTable();
+    
+    sqlite3* db = 0; // хэндл объекта соединение к БД
+    sqlite3_open(this->filePath, &db);
+    std::string createQuery = "CREATE TABLE IF NOT EXISTS \"THREATS\" (\
+        \"THREAT_PATH\"	TEXT NOT NULL UNIQUE,\
+        \"THREAT_NAME\"	TEXT NOT NULL); ";
+    sqlite3_stmt* createStmt;
+    sqlite3_prepare_v2(db, createQuery.c_str(), createQuery.size(), &createStmt, NULL);
+    if (sqlite3_step(createStmt) != SQLITE_DONE) return;//cout << "Didn't Create Table!" << endl;
+
+    for (size_t i = 0; i < infoStorage.threatPaths.size(); i++)
+    { 
+        std::string insertQuery = "INSERT INTO THREATS (THREAT_PATH, THREAT_NAME) VALUES (\"";
+        insertQuery += infoStorage.threatPaths.at(i).data();
+        insertQuery += "\", \"";
+        insertQuery += infoStorage.threatNames.at(i).data();
+        insertQuery += "\");";
+        const char* temp = insertQuery.c_str();
+        sqlite3_stmt* insertStmt;
+        sqlite3_prepare_v2(db, temp, insertQuery.size(), &insertStmt, NULL);
+        if (sqlite3_step(insertStmt) != SQLITE_DONE) return;//cout << "Didn't Insert Item!" << endl;
+    }      
+    sqlite3_close(db);
+    sqlite3* db1 = 0; // хэндл объекта соединение к БД
+    sqlite3_open(this->filePath, &db1);
+    createQuery = "CREATE TABLE IF NOT EXISTS \"QUARANTINE\" (\
+        \"QUAR_PATH\"	TEXT NOT NULL UNIQUE,\
+        \"QUAR_NAME\"	TEXT NOT NULL); ";
+    sqlite3_stmt* createStmt1;
+    sqlite3_prepare_v2(db1, createQuery.c_str(), createQuery.size(), &createStmt1, NULL);
+    if (sqlite3_step(createStmt1) != SQLITE_DONE) return;//cout << "Didn't Create Table!" << endl;
+
+    for (size_t i = 0; i < infoStorage.quarPaths.size(); i++)
+    {
+        std::string insertQuery = "INSERT INTO QUARANTINE (QUAR_PATH, QUAR_NAME) VALUES (\"";
+        insertQuery += infoStorage.quarPaths.at(i).data();
+        insertQuery += "\", \"";
+        insertQuery += infoStorage.quarNames.at(i).data();
+        insertQuery += "\");";
+        const char* temp = insertQuery.c_str();
+        sqlite3_stmt* insertStmt;
+        sqlite3_prepare_v2(db, temp, insertQuery.size(), &insertStmt, NULL);
+        if (sqlite3_step(insertStmt) != SQLITE_DONE) return;//cout << "Didn't Insert Item!" << endl;
+    }
+    sqlite3_close(db);
+}
+
 void Database::update()
 {
     this->ID.clear();
@@ -28,13 +145,13 @@ void Database::update()
     this->OFFSET_END.clear();
     this->data.clear();
     sqlite3_stmt* stmt;
-    sqlite3* db = 0; // ����� ������� ���������� � ��
+    sqlite3* db = 0; // хэндл объекта соединение к БД
     const char* SQL = "SELECT * FROM ENTRIES;";
     if (sqlite3_open(filePath, &db) == SQLITE_OK)
     {
         if (sqlite3_prepare_v2(db, SQL, -1, &stmt, 0) == SQLITE_OK)
         {
-            while (sqlite3_step(stmt) == SQLITE_ROW) //���� � �� ���� ������ ���������� ����������
+            while (sqlite3_step(stmt) == SQLITE_ROW) //пока в бд есть данные происходит считывание
             {
                 this->ID.push_back((char*)sqlite3_column_text(stmt, 0));
                 this->MW_NAME.push_back((char*)sqlite3_column_text(stmt, 1));
@@ -120,15 +237,15 @@ size_t Database::check(std::string buffer, uint32_t offset) // input - FILE BUFF
 void Database::doSELECTforExample()
 {
     const char* SQL = "SELECT * FROM ENTRIES;";
-    sqlite3* db = 0; // ����� ������� ���������� � ��
+    sqlite3* db = 0; // хэндл объекта соединение к БД
     int rc = 0;
     char* err;
     sqlite3_stmt* result;
-    // ��������� ����������
+    // открываем соединение
     if (sqlite3_open(filePath, &db))
-        fprintf(stderr, "������ ��������/�������� ��: %s\n", sqlite3_errmsg(db));
-    // ��������� SQL
-    std::cout << "� � � � � � � � � �   � � � � � � �   S Q L :\n" << std::endl;
+        fprintf(stderr, "Ошибка открытия/создания БД: %s\n", sqlite3_errmsg(db));
+    // выполняем SQL
+    std::cout << "В Ы П О Л Н Е Н И Е   З А П Р О С А   S Q L :\n" << std::endl;
     rc = sqlite3_exec(db, SQL, callback, &result, &err);
     // Compruebo que no hay error
     if (rc != SQLITE_OK) {

@@ -155,11 +155,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Library.h" />
+    <ClInclude Include="IPC.h" />
     <ClInclude Include="SHA256.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Library.cpp" />
+    <ClCompile Include="IPC.cpp" />
     <ClCompile Include="SHA256.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -114,7 +114,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\elisi\Documents\Visual Studio 2019\SQLite\sqlite-amalgamation;C:\Users\elisi\source\repos\Antivirus\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -144,8 +144,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Database.cpp" />
-    <ClCompile Include="ScanEngine.cpp" />
+    <ClCompile Include="InformationStorage.cpp" />
+    <ClCompile Include="Monitoring.cpp" />
     <ClCompile Include="Scanner.cpp" />
+    <ClCompile Include="ScheduledScanner.cpp" />
     <ClCompile Include="Service.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -153,8 +155,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Database.h" />
+    <ClInclude Include="InformationStorage.h" />
+    <ClInclude Include="Monitoring.h" />
     <ClInclude Include="Scanner.h" />
-    <ClInclude Include="ScanObject.h" />
+    <ClInclude Include="ScheduledScanner.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
