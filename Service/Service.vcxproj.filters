@@ -33,6 +33,9 @@
     <ClCompile Include="Monitoring.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="FilesWorker.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="sqlite3.lib" />
@@ -53,5 +56,11 @@
     <ClInclude Include="Monitoring.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="FilesWorker.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="sqlite3.dll" />
   </ItemGroup>
 </Project>

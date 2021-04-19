@@ -820,7 +820,7 @@ namespace Client {
 
 		if (pipeForRead == INVALID_HANDLE_VALUE)
 		{
-			MessageBox::Show("Нет соединения с сервером\r\nКод ошибки: " + GetLastError().ToString(), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			//MessageBox::Show("Нет соединения с сервером\r\nКод ошибки: " + GetLastError().ToString(), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			FlushFileBuffers(pipeForRead);
 			DisconnectNamedPipe(pipeForRead);
 			CloseHandle(pipeForRead);
@@ -850,7 +850,7 @@ namespace Client {
 		if (pipeForSend == INVALID_HANDLE_VALUE)
 		{
 			CloseHandle(pipeForSend);
-			MessageBox::Show("Нет соединения с сервером\r\n" + GetLastError().ToString(), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			//MessageBox::Show("Нет соединения с сервером\r\n" + GetLastError().ToString(), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			pipeForSend = NULL;
 			return false;
 		}
@@ -859,7 +859,7 @@ namespace Client {
 		if (GetLastError() == ERROR_PIPE_BUSY)
 		{
 			CloseHandle(pipeForSend);
-			MessageBox::Show("Нет соединения с сервером\r\n" + GetLastError().ToString(), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			//MessageBox::Show("Нет соединения с сервером\r\n" + GetLastError().ToString(), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			pipeForSend = NULL;
 			return false;
 		}
@@ -868,7 +868,7 @@ namespace Client {
 		if (GetLastError() == ERROR_BROKEN_PIPE)
 		{
 			CloseHandle(pipeForSend);
-			MessageBox::Show("Нет соединения с сервером\r\n" + GetLastError().ToString(), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			//MessageBox::Show("Нет соединения с сервером\r\n" + GetLastError().ToString(), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			pipeForSend = NULL;
 			return false;
 		}
@@ -876,7 +876,7 @@ namespace Client {
 		if (GetLastError() == ERROR_FILE_NOT_FOUND)
 		{
 			CloseHandle(pipeForSend);
-			MessageBox::Show("Нет соединения с сервером\r\n" + GetLastError().ToString(), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			//MessageBox::Show("Нет соединения с сервером\r\n" + GetLastError().ToString(), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			pipeForSend = NULL;
 			return false;
 		}
@@ -906,7 +906,7 @@ namespace Client {
 				TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
 			if (!fConnected)
 			{
-				MessageBox::Show("Нет соединения с сервером\r\n" + GetLastError().ToString(), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				//MessageBox::Show("Нет соединения с сервером\r\n" + GetLastError().ToString(), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				CloseHandle(pipeForRead);
 			}
 			messagefromService = Messenger::readMessage(pipeForRead, PIPE_BUFSIZE);
@@ -995,8 +995,8 @@ namespace Client {
 				   progressBar2->Increment(1);
 				   if (msclr::interop::marshal_as<String^>(msg.sArr.at(1))->Contains("вредонос"))
 				   {
-					   if (!reportListBox->Items->Contains(msclr::interop::marshal_as<String^>(msg.sArr.at(1)) + "    " + msclr::interop::marshal_as<String^>(msg.sArr.at(0))))
-						   reportListBox->Items->Add(msclr::interop::marshal_as<String^>(msg.sArr.at(1)) + "    " + msclr::interop::marshal_as<String^>(msg.sArr.at(0)));
+					   if (!reportListBox->Items->Contains(msclr::interop::marshal_as<String^>(msg.sArr.at(1)) + "\t" + msclr::interop::marshal_as<String^>(msg.sArr.at(0))))
+						   reportListBox->Items->Add(msclr::interop::marshal_as<String^>(msg.sArr.at(1)) + "\t" + msclr::interop::marshal_as<String^>(msg.sArr.at(0)));
 				   }
 	
 			   }
@@ -1019,8 +1019,8 @@ namespace Client {
 				   progressBar3->Increment(1);
 				   if (msclr::interop::marshal_as<String^>(msg.sArr.at(1))->Contains("вредонос"))
 				   {
-					   if (!reportListBox->Items->Contains(msclr::interop::marshal_as<String^>(msg.sArr.at(1)) + "    " + msclr::interop::marshal_as<String^>(msg.sArr.at(0))))
-						   reportListBox->Items->Add(msclr::interop::marshal_as<String^>(msg.sArr.at(1)) + "    " + msclr::interop::marshal_as<String^>(msg.sArr.at(0)));
+					   if (!reportListBox->Items->Contains(msclr::interop::marshal_as<String^>(msg.sArr.at(1)) + "\t" + msclr::interop::marshal_as<String^>(msg.sArr.at(0))))
+						   reportListBox->Items->Add(msclr::interop::marshal_as<String^>(msg.sArr.at(1)) + "\t" + msclr::interop::marshal_as<String^>(msg.sArr.at(0)));
 				   }
 
 			   }

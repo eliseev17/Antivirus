@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Database.cpp" />
+    <ClCompile Include="FilesWorker.cpp" />
     <ClCompile Include="InformationStorage.cpp" />
     <ClCompile Include="Monitoring.cpp" />
     <ClCompile Include="Scanner.cpp" />
@@ -155,10 +156,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Database.h" />
+    <ClInclude Include="FilesWorker.h" />
     <ClInclude Include="InformationStorage.h" />
     <ClInclude Include="Monitoring.h" />
     <ClInclude Include="Scanner.h" />
     <ClInclude Include="ScheduledScanner.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="sqlite3.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
