@@ -12,7 +12,6 @@
 
 HANDLE pipeForSend = NULL;
 HANDLE pipeForRead = NULL;
-//HANDLE mutex = CreateMutex(NULL, FALSE, TEXT("mutex1"));
 
 namespace Client {
 
@@ -30,7 +29,6 @@ namespace Client {
 	public:
 		ClientForm(void)
 		{
-			//mutex = CreateMutex(NULL, FALSE, TEXT("mutex1"));
 			InitializeComponent();
 			Control::CheckForIllegalCrossThreadCalls = false;
 		}
@@ -88,6 +86,10 @@ namespace Client {
 	private: System::Windows::Forms::Label^ label9;
 	private: System::Windows::Forms::Label^ label8;
 	private: System::Windows::Forms::RichTextBox^ txtMonitorRes;
+	private: System::Windows::Forms::TabPage^ tabPage5;
+	private: System::Windows::Forms::Button^ btnStopService;
+	private: System::Windows::Forms::Button^ btnStartService;
+
 	private:
 		/// <summary>
 		/// Обязательная переменная конструктора.
@@ -116,6 +118,10 @@ namespace Client {
 			this->btnScheduleScan = (gcnew System::Windows::Forms::Button());
 			this->btnBrowse3 = (gcnew System::Windows::Forms::Button());
 			this->tabPage2 = (gcnew System::Windows::Forms::TabPage());
+			this->progressBar3 = (gcnew System::Windows::Forms::ProgressBar());
+			this->label9 = (gcnew System::Windows::Forms::Label());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->txtMonitorRes = (gcnew System::Windows::Forms::RichTextBox());
 			this->btnDelMonitoring = (gcnew System::Windows::Forms::Button());
 			this->btnSetMonitoring = (gcnew System::Windows::Forms::Button());
 			this->monitoringListBox = (gcnew System::Windows::Forms::ListBox());
@@ -141,10 +147,9 @@ namespace Client {
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->QuarantineListBox = (gcnew System::Windows::Forms::ListBox());
 			this->label5 = (gcnew System::Windows::Forms::Label());
-			this->label8 = (gcnew System::Windows::Forms::Label());
-			this->txtMonitorRes = (gcnew System::Windows::Forms::RichTextBox());
-			this->label9 = (gcnew System::Windows::Forms::Label());
-			this->progressBar3 = (gcnew System::Windows::Forms::ProgressBar());
+			this->tabPage5 = (gcnew System::Windows::Forms::TabPage());
+			this->btnStopService = (gcnew System::Windows::Forms::Button());
+			this->btnStartService = (gcnew System::Windows::Forms::Button());
 			this->tabPage3->SuspendLayout();
 			this->tabPage2->SuspendLayout();
 			this->tabPage1->SuspendLayout();
@@ -154,6 +159,7 @@ namespace Client {
 			this->splitContainer1->Panel1->SuspendLayout();
 			this->splitContainer1->Panel2->SuspendLayout();
 			this->splitContainer1->SuspendLayout();
+			this->tabPage5->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// tabPage3
@@ -352,6 +358,55 @@ namespace Client {
 			this->tabPage2->Size = System::Drawing::Size(1100, 522);
 			this->tabPage2->TabIndex = 1;
 			this->tabPage2->Text = L"Мониторинг папки";
+			// 
+			// progressBar3
+			// 
+			this->progressBar3->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->progressBar3->Location = System::Drawing::Point(13, 480);
+			this->progressBar3->Name = L"progressBar3";
+			this->progressBar3->Size = System::Drawing::Size(1072, 28);
+			this->progressBar3->TabIndex = 35;
+			// 
+			// label9
+			// 
+			this->label9->AutoSize = true;
+			this->label9->ForeColor = System::Drawing::Color::White;
+			this->label9->Location = System::Drawing::Point(620, 66);
+			this->label9->Name = L"label9";
+			this->label9->Size = System::Drawing::Size(219, 17);
+			this->label9->TabIndex = 34;
+			this->label9->Text = L"Список папок для мониторинга:";
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->ForeColor = System::Drawing::Color::White;
+			this->label8->Location = System::Drawing::Point(10, 66);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(209, 17);
+			this->label8->TabIndex = 33;
+			this->label8->Text = L"Процесс последней проверки:";
+			// 
+			// txtMonitorRes
+			// 
+			this->txtMonitorRes->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->txtMonitorRes->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(80)), static_cast<System::Int32>(static_cast<System::Byte>(80)),
+				static_cast<System::Int32>(static_cast<System::Byte>(80)));
+			this->txtMonitorRes->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->txtMonitorRes->Font = (gcnew System::Drawing::Font(L"Calibri", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->txtMonitorRes->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
+				static_cast<System::Int32>(static_cast<System::Byte>(224)));
+			this->txtMonitorRes->HideSelection = false;
+			this->txtMonitorRes->Location = System::Drawing::Point(13, 86);
+			this->txtMonitorRes->Name = L"txtMonitorRes";
+			this->txtMonitorRes->ReadOnly = true;
+			this->txtMonitorRes->Size = System::Drawing::Size(604, 386);
+			this->txtMonitorRes->TabIndex = 32;
+			this->txtMonitorRes->Text = L"";
 			// 
 			// btnDelMonitoring
 			// 
@@ -575,6 +630,7 @@ namespace Client {
 			this->tabControl1->Controls->Add(this->tabPage3);
 			this->tabControl1->Controls->Add(this->tabPage2);
 			this->tabControl1->Controls->Add(this->tabPage4);
+			this->tabControl1->Controls->Add(this->tabPage5);
 			this->tabControl1->Location = System::Drawing::Point(-5, 0);
 			this->tabControl1->Name = L"tabControl1";
 			this->tabControl1->SelectedIndex = 0;
@@ -704,7 +760,7 @@ namespace Client {
 			this->QuarantineListBox->ItemHeight = 16;
 			this->QuarantineListBox->Location = System::Drawing::Point(7, 26);
 			this->QuarantineListBox->Name = L"QuarantineListBox";
-			this->QuarantineListBox->Size = System::Drawing::Size(1078, 178);
+			this->QuarantineListBox->Size = System::Drawing::Size(1078, 130);
 			this->QuarantineListBox->TabIndex = 17;
 			// 
 			// label5
@@ -717,54 +773,52 @@ namespace Client {
 			this->label5->TabIndex = 18;
 			this->label5->Text = L"В карантине:";
 			// 
-			// label8
+			// tabPage5
 			// 
-			this->label8->AutoSize = true;
-			this->label8->ForeColor = System::Drawing::Color::White;
-			this->label8->Location = System::Drawing::Point(10, 66);
-			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(209, 17);
-			this->label8->TabIndex = 33;
-			this->label8->Text = L"Процесс последней проверки:";
+			this->tabPage5->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(70)), static_cast<System::Int32>(static_cast<System::Byte>(70)),
+				static_cast<System::Int32>(static_cast<System::Byte>(70)));
+			this->tabPage5->Controls->Add(this->btnStopService);
+			this->tabPage5->Controls->Add(this->btnStartService);
+			this->tabPage5->Location = System::Drawing::Point(4, 25);
+			this->tabPage5->Name = L"tabPage5";
+			this->tabPage5->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage5->Size = System::Drawing::Size(1100, 522);
+			this->tabPage5->TabIndex = 4;
+			this->tabPage5->Text = L"Сервис, да сука\?";
 			// 
-			// txtMonitorRes
+			// btnStopService
 			// 
-			this->txtMonitorRes->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+			this->btnStopService->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->txtMonitorRes->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(80)), static_cast<System::Int32>(static_cast<System::Byte>(80)),
-				static_cast<System::Int32>(static_cast<System::Byte>(80)));
-			this->txtMonitorRes->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->txtMonitorRes->Font = (gcnew System::Drawing::Font(L"Calibri", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->btnStopService->BackColor = System::Drawing::Color::DarkSalmon;
+			this->btnStopService->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->btnStopService->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->txtMonitorRes->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
-				static_cast<System::Int32>(static_cast<System::Byte>(224)));
-			this->txtMonitorRes->HideSelection = false;
-			this->txtMonitorRes->Location = System::Drawing::Point(13, 86);
-			this->txtMonitorRes->Name = L"txtMonitorRes";
-			this->txtMonitorRes->ReadOnly = true;
-			this->txtMonitorRes->Size = System::Drawing::Size(604, 386);
-			this->txtMonitorRes->TabIndex = 32;
-			this->txtMonitorRes->Text = L"";
+			this->btnStopService->Location = System::Drawing::Point(565, 12);
+			this->btnStopService->Name = L"btnStopService";
+			this->btnStopService->Size = System::Drawing::Size(522, 496);
+			this->btnStopService->TabIndex = 1;
+			this->btnStopService->Text = L"Остановить сервис";
+			this->btnStopService->UseVisualStyleBackColor = false;
+			this->btnStopService->Click += gcnew System::EventHandler(this, &ClientForm::btnStopService_Click);
 			// 
-			// label9
+			// btnStartService
 			// 
-			this->label9->AutoSize = true;
-			this->label9->ForeColor = System::Drawing::Color::White;
-			this->label9->Location = System::Drawing::Point(620, 66);
-			this->label9->Name = L"label9";
-			this->label9->Size = System::Drawing::Size(219, 17);
-			this->label9->TabIndex = 34;
-			this->label9->Text = L"Список папок для мониторинга:";
-			// 
-			// progressBar3
-			// 
-			this->progressBar3->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
+			this->btnStartService->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->progressBar3->Location = System::Drawing::Point(13, 480);
-			this->progressBar3->Name = L"progressBar3";
-			this->progressBar3->Size = System::Drawing::Size(1072, 28);
-			this->progressBar3->TabIndex = 35;
+			this->btnStartService->BackColor = System::Drawing::Color::PaleGreen;
+			this->btnStartService->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->btnStartService->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->btnStartService->Location = System::Drawing::Point(13, 12);
+			this->btnStartService->Name = L"btnStartService";
+			this->btnStartService->Size = System::Drawing::Size(546, 496);
+			this->btnStartService->TabIndex = 0;
+			this->btnStartService->Text = L"Запустить сервис";
+			this->btnStartService->UseVisualStyleBackColor = false;
+			this->btnStartService->Click += gcnew System::EventHandler(this, &ClientForm::btnStartService_Click);
 			// 
 			// ClientForm
 			// 
@@ -777,6 +831,7 @@ namespace Client {
 			this->MinimumSize = System::Drawing::Size(1050, 300);
 			this->Name = L"ClientForm";
 			this->Text = L"Антивирус";
+			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &ClientForm::ClientForm_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &ClientForm::ClientForm_Load);
 			this->tabPage3->ResumeLayout(false);
 			this->tabPage3->PerformLayout();
@@ -792,6 +847,7 @@ namespace Client {
 			this->splitContainer1->Panel2->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->splitContainer1))->EndInit();
 			this->splitContainer1->ResumeLayout(false);
+			this->tabPage5->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}
@@ -824,7 +880,7 @@ namespace Client {
 			FlushFileBuffers(pipeForRead);
 			DisconnectNamedPipe(pipeForRead);
 			CloseHandle(pipeForRead);
-			createPipeForSend();
+			//createPipeForSend();
 			return false;
 		}
 		return true;
@@ -886,13 +942,17 @@ namespace Client {
 
 	void createPipeAndListening()
 	{
-		bool fConnected1 = false;
-		while (!fConnected1)
+		bool fConnected2 = false, fConnected3 = false;
+		while (!fConnected2)
 		{
-			fConnected1 = createPipeForSend();			
-			
+			fConnected2 = createPipeForSend();
+
 		}
-		createPipeForRead();
+		while (!fConnected3)
+		{
+			fConnected3 = createPipeForRead();
+
+		}
 
 		// Подождите, пока клиент подключится; если это удастся,
 		// функция возвращает ненулевое значение. Если функция
@@ -902,13 +962,6 @@ namespace Client {
 		message messagefromService;
 		while (fConnected)
 		{
-			fConnected = ConnectNamedPipe(pipeForRead, NULL) ?
-				TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
-			if (!fConnected)
-			{
-				//MessageBox::Show("Нет соединения с сервером\r\n" + GetLastError().ToString(), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				CloseHandle(pipeForRead);
-			}
 			messagefromService = Messenger::readMessage(pipeForRead, PIPE_BUFSIZE);
 			if (messagefromService.cmd == COMMAND::UNKNOWN)
 			{				
@@ -925,13 +978,21 @@ namespace Client {
 					fConnected3 = createPipeForRead();
 
 				}
+				fConnected = ConnectNamedPipe(pipeForRead, NULL) ?
+					TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
+				if (!fConnected)
+				{
+					//MessageBox::Show("Нет соединения с сервером\r\n" + GetLastError().ToString(), "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					FlushFileBuffers(pipeForRead);
+					DisconnectNamedPipe(pipeForRead);
+					CloseHandle(pipeForRead);
+				}
 			}
 			messageProcessing(messagefromService);
 		}
 		
 		//progressBar1->Value = 0;
-		//FlushFileBuffers(pipeForRead);
-		//DisconnectNamedPipe(pipeForRead);
+
 		//CloseHandle(pipeForRead);
 		//createPipeForSend();
 		//Thread^ thread = gcnew Thread(gcnew ThreadStart(this, &ClientForm::createPipeAndListening));
@@ -1232,6 +1293,52 @@ namespace Client {
 		txtSchedulePath->Clear();
 		progressBar2->Value = 0;
 		monitoringListBox->Items->Clear();
+	}
+
+	private: System::Void btnStartService_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		SC_HANDLE schSCManager = OpenSCManager(
+			NULL,                    // local computer
+			NULL,                    // ServicesActive database 
+			SC_MANAGER_CONNECT);
+
+		if (NULL == schSCManager)
+		{
+			HRESULT error = GetLastError();
+			printf("OpenSCManager failed (%d)\n", error);
+			return;
+		}
+
+		SC_HANDLE schService = OpenService(
+			schSCManager,         // SCM database 
+			L"AntimalwareService",            // name of service 
+			SERVICE_START |
+			SERVICE_QUERY_STATUS |
+			SERVICE_ENUMERATE_DEPENDENTS);
+
+		if (schService == NULL)
+		{
+			printf("OpenService failed (%d)\n", GetLastError());
+			CloseServiceHandle(schSCManager);
+			return;
+		}
+
+		StartService(schService, NULL, NULL);
+	}
+
+	private: System::Void btnStopService_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		message doStopMsg;
+		doStopMsg.cmd = COMMAND::STOP_SERVICE;
+		Messenger::sendMessage(pipeForSend, PIPE_BUFSIZE, doStopMsg);
+	}
+
+	private: System::Void ClientForm_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e)
+	{
+		/*FlushFileBuffers(pipeForSend);
+		DisconnectNamedPipe(pipeForSend);
+		CloseHandle(pipeForSend);
+		CloseHandle(pipeForRead);*/
 	}
 };
 }
