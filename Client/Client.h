@@ -139,14 +139,14 @@ namespace Client {
 			this->btnBrowseFolder = (gcnew System::Windows::Forms::Button());
 			this->tabControl1 = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage4 = (gcnew System::Windows::Forms::TabPage());
-			this->btnDeleteFromQuarantine = (gcnew System::Windows::Forms::Button());
-			this->btnMoveToQuarantine = (gcnew System::Windows::Forms::Button());
-			this->btnDelete = (gcnew System::Windows::Forms::Button());
 			this->splitContainer1 = (gcnew System::Windows::Forms::SplitContainer());
 			this->reportListBox = (gcnew System::Windows::Forms::ListBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->btnDeleteFromQuarantine = (gcnew System::Windows::Forms::Button());
 			this->QuarantineListBox = (gcnew System::Windows::Forms::ListBox());
+			this->btnMoveToQuarantine = (gcnew System::Windows::Forms::Button());
 			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->btnDelete = (gcnew System::Windows::Forms::Button());
 			this->tabPage5 = (gcnew System::Windows::Forms::TabPage());
 			this->btnStopService = (gcnew System::Windows::Forms::Button());
 			this->btnStartService = (gcnew System::Windows::Forms::Button());
@@ -370,6 +370,7 @@ namespace Client {
 			// 
 			// label9
 			// 
+			this->label9->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
 			this->label9->AutoSize = true;
 			this->label9->ForeColor = System::Drawing::Color::White;
 			this->label9->Location = System::Drawing::Point(620, 66);
@@ -441,8 +442,7 @@ namespace Client {
 			// 
 			// monitoringListBox
 			// 
-			this->monitoringListBox->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-				| System::Windows::Forms::AnchorStyles::Left)
+			this->monitoringListBox->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->monitoringListBox->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(80)),
 				static_cast<System::Int32>(static_cast<System::Byte>(80)), static_cast<System::Int32>(static_cast<System::Byte>(80)));
@@ -641,9 +641,6 @@ namespace Client {
 			// 
 			this->tabPage4->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(70)), static_cast<System::Int32>(static_cast<System::Byte>(70)),
 				static_cast<System::Int32>(static_cast<System::Byte>(70)));
-			this->tabPage4->Controls->Add(this->btnDeleteFromQuarantine);
-			this->tabPage4->Controls->Add(this->btnMoveToQuarantine);
-			this->tabPage4->Controls->Add(this->btnDelete);
 			this->tabPage4->Controls->Add(this->splitContainer1);
 			this->tabPage4->Location = System::Drawing::Point(4, 25);
 			this->tabPage4->Name = L"tabPage4";
@@ -651,46 +648,6 @@ namespace Client {
 			this->tabPage4->Size = System::Drawing::Size(1100, 522);
 			this->tabPage4->TabIndex = 3;
 			this->tabPage4->Text = L"Обнаруженные угрозы";
-			// 
-			// btnDeleteFromQuarantine
-			// 
-			this->btnDeleteFromQuarantine->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
-			this->btnDeleteFromQuarantine->BackColor = System::Drawing::Color::PaleGreen;
-			this->btnDeleteFromQuarantine->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
-			this->btnDeleteFromQuarantine->Location = System::Drawing::Point(740, 480);
-			this->btnDeleteFromQuarantine->Name = L"btnDeleteFromQuarantine";
-			this->btnDeleteFromQuarantine->Size = System::Drawing::Size(351, 28);
-			this->btnDeleteFromQuarantine->TabIndex = 23;
-			this->btnDeleteFromQuarantine->Text = L"Вернуть из карантина";
-			this->btnDeleteFromQuarantine->UseVisualStyleBackColor = false;
-			this->btnDeleteFromQuarantine->Click += gcnew System::EventHandler(this, &ClientForm::btnDeleteFromQuarantine_Click_1);
-			// 
-			// btnMoveToQuarantine
-			// 
-			this->btnMoveToQuarantine->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->btnMoveToQuarantine->BackColor = System::Drawing::Color::Khaki;
-			this->btnMoveToQuarantine->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
-			this->btnMoveToQuarantine->Location = System::Drawing::Point(377, 480);
-			this->btnMoveToQuarantine->Name = L"btnMoveToQuarantine";
-			this->btnMoveToQuarantine->Size = System::Drawing::Size(356, 28);
-			this->btnMoveToQuarantine->TabIndex = 22;
-			this->btnMoveToQuarantine->Text = L"Поместить в карантин";
-			this->btnMoveToQuarantine->UseVisualStyleBackColor = false;
-			this->btnMoveToQuarantine->Click += gcnew System::EventHandler(this, &ClientForm::btnMoveToQuarantine_Click_1);
-			// 
-			// btnDelete
-			// 
-			this->btnDelete->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
-			this->btnDelete->BackColor = System::Drawing::Color::Salmon;
-			this->btnDelete->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
-			this->btnDelete->Location = System::Drawing::Point(13, 480);
-			this->btnDelete->Name = L"btnDelete";
-			this->btnDelete->Size = System::Drawing::Size(358, 28);
-			this->btnDelete->TabIndex = 21;
-			this->btnDelete->Text = L"Удалить";
-			this->btnDelete->UseVisualStyleBackColor = false;
-			this->btnDelete->Click += gcnew System::EventHandler(this, &ClientForm::btnDelete_Click_1);
 			// 
 			// splitContainer1
 			// 
@@ -712,11 +669,14 @@ namespace Client {
 			// 
 			// splitContainer1.Panel2
 			// 
+			this->splitContainer1->Panel2->Controls->Add(this->btnDeleteFromQuarantine);
 			this->splitContainer1->Panel2->Controls->Add(this->QuarantineListBox);
+			this->splitContainer1->Panel2->Controls->Add(this->btnMoveToQuarantine);
 			this->splitContainer1->Panel2->Controls->Add(this->label5);
-			this->splitContainer1->Size = System::Drawing::Size(1088, 476);
-			this->splitContainer1->SplitterDistance = 237;
-			this->splitContainer1->SplitterWidth = 6;
+			this->splitContainer1->Panel2->Controls->Add(this->btnDelete);
+			this->splitContainer1->Size = System::Drawing::Size(1088, 510);
+			this->splitContainer1->SplitterDistance = 236;
+			this->splitContainer1->SplitterWidth = 1;
 			this->splitContainer1->TabIndex = 20;
 			// 
 			// reportListBox
@@ -746,6 +706,19 @@ namespace Client {
 			this->label1->TabIndex = 7;
 			this->label1->Text = L"Обнаруженные угрозы:";
 			// 
+			// btnDeleteFromQuarantine
+			// 
+			this->btnDeleteFromQuarantine->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
+			this->btnDeleteFromQuarantine->BackColor = System::Drawing::Color::PaleGreen;
+			this->btnDeleteFromQuarantine->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->btnDeleteFromQuarantine->Location = System::Drawing::Point(733, 237);
+			this->btnDeleteFromQuarantine->Name = L"btnDeleteFromQuarantine";
+			this->btnDeleteFromQuarantine->Size = System::Drawing::Size(351, 28);
+			this->btnDeleteFromQuarantine->TabIndex = 23;
+			this->btnDeleteFromQuarantine->Text = L"Вернуть из карантина";
+			this->btnDeleteFromQuarantine->UseVisualStyleBackColor = false;
+			this->btnDeleteFromQuarantine->Click += gcnew System::EventHandler(this, &ClientForm::btnDeleteFromQuarantine_Click_1);
+			// 
 			// QuarantineListBox
 			// 
 			this->QuarantineListBox->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
@@ -758,20 +731,47 @@ namespace Client {
 				static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)));
 			this->QuarantineListBox->FormattingEnabled = true;
 			this->QuarantineListBox->ItemHeight = 16;
-			this->QuarantineListBox->Location = System::Drawing::Point(7, 26);
+			this->QuarantineListBox->Location = System::Drawing::Point(7, 21);
 			this->QuarantineListBox->Name = L"QuarantineListBox";
-			this->QuarantineListBox->Size = System::Drawing::Size(1078, 130);
+			this->QuarantineListBox->Size = System::Drawing::Size(1077, 210);
 			this->QuarantineListBox->TabIndex = 17;
+			// 
+			// btnMoveToQuarantine
+			// 
+			this->btnMoveToQuarantine->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->btnMoveToQuarantine->BackColor = System::Drawing::Color::Khaki;
+			this->btnMoveToQuarantine->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->btnMoveToQuarantine->Location = System::Drawing::Point(371, 237);
+			this->btnMoveToQuarantine->Name = L"btnMoveToQuarantine";
+			this->btnMoveToQuarantine->Size = System::Drawing::Size(356, 28);
+			this->btnMoveToQuarantine->TabIndex = 22;
+			this->btnMoveToQuarantine->Text = L"Поместить в карантин";
+			this->btnMoveToQuarantine->UseVisualStyleBackColor = false;
+			this->btnMoveToQuarantine->Click += gcnew System::EventHandler(this, &ClientForm::btnMoveToQuarantine_Click_1);
 			// 
 			// label5
 			// 
 			this->label5->AutoSize = true;
 			this->label5->ForeColor = System::Drawing::Color::White;
-			this->label5->Location = System::Drawing::Point(4, 6);
+			this->label5->Location = System::Drawing::Point(4, 1);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(95, 17);
 			this->label5->TabIndex = 18;
 			this->label5->Text = L"В карантине:";
+			// 
+			// btnDelete
+			// 
+			this->btnDelete->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->btnDelete->BackColor = System::Drawing::Color::Salmon;
+			this->btnDelete->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->btnDelete->Location = System::Drawing::Point(7, 237);
+			this->btnDelete->Name = L"btnDelete";
+			this->btnDelete->Size = System::Drawing::Size(358, 28);
+			this->btnDelete->TabIndex = 21;
+			this->btnDelete->Text = L"Удалить";
+			this->btnDelete->UseVisualStyleBackColor = false;
+			this->btnDelete->Click += gcnew System::EventHandler(this, &ClientForm::btnDelete_Click_1);
 			// 
 			// tabPage5
 			// 
@@ -784,20 +784,19 @@ namespace Client {
 			this->tabPage5->Padding = System::Windows::Forms::Padding(3);
 			this->tabPage5->Size = System::Drawing::Size(1100, 522);
 			this->tabPage5->TabIndex = 4;
-			this->tabPage5->Text = L"Сервис, да сука\?";
+			this->tabPage5->Text = L"Управление сервисом";
 			// 
 			// btnStopService
 			// 
-			this->btnStopService->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-				| System::Windows::Forms::AnchorStyles::Left)
+			this->btnStopService->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->btnStopService->BackColor = System::Drawing::Color::DarkSalmon;
 			this->btnStopService->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->btnStopService->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16.2F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->btnStopService->Location = System::Drawing::Point(565, 12);
+			this->btnStopService->Location = System::Drawing::Point(13, 263);
 			this->btnStopService->Name = L"btnStopService";
-			this->btnStopService->Size = System::Drawing::Size(522, 496);
+			this->btnStopService->Size = System::Drawing::Size(1074, 245);
 			this->btnStopService->TabIndex = 1;
 			this->btnStopService->Text = L"Остановить сервис";
 			this->btnStopService->UseVisualStyleBackColor = false;
@@ -814,7 +813,7 @@ namespace Client {
 				static_cast<System::Byte>(204)));
 			this->btnStartService->Location = System::Drawing::Point(13, 12);
 			this->btnStartService->Name = L"btnStartService";
-			this->btnStartService->Size = System::Drawing::Size(546, 496);
+			this->btnStartService->Size = System::Drawing::Size(1074, 245);
 			this->btnStartService->TabIndex = 0;
 			this->btnStartService->Text = L"Запустить сервис";
 			this->btnStartService->UseVisualStyleBackColor = false;
@@ -965,8 +964,13 @@ namespace Client {
 			messagefromService = Messenger::readMessage(pipeForRead, PIPE_BUFSIZE);
 			if (messagefromService.cmd == COMMAND::UNKNOWN)
 			{				
-				MessageBox::Show("Сервер был закрыт", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				MessageBox::Show("Сервис был остановлен", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				progressBar1->Value = 0;
+				progressBar2->Value = 0;
+				progressBar3->Value = 0;
+				txtScanRes->Clear();
+				txtScheduleScanRes->Clear();
+				txtMonitorRes->Clear();
 				bool fConnected2 = false, fConnected3 = false;
 				while (!fConnected2)
 				{
@@ -1006,17 +1010,22 @@ namespace Client {
 		switch (msg.cmd)
 		{
 			case COMMAND::INFO: {
-				if (msg.nArr.at(0) == 0)
+				if (msg.nArr.at(0) == 0) {
+					reportListBox->Items->Clear();
 					for (size_t i = 0; i < msg.sArr.size(); i += 2)
 					{
-						reportListBox->Items->Add(msclr::interop::marshal_as<String^>(msg.sArr.at(i + 1)) + "\t" + msclr::interop::marshal_as<String^>(msg.sArr.at(i)));
+						if (!reportListBox->Items->Contains(msclr::interop::marshal_as<String^>(msg.sArr.at(i + 1)) + "\t" + msclr::interop::marshal_as<String^>(msg.sArr.at(i))))
+							reportListBox->Items->Add(msclr::interop::marshal_as<String^>(msg.sArr.at(i + 1)) + "\t" + msclr::interop::marshal_as<String^>(msg.sArr.at(i)));
 					}
-
-				if (msg.nArr.at(0) == 1)
+				}
+				if (msg.nArr.at(0) == 1) {
+					QuarantineListBox->Items->Clear();
 					for (size_t i = 0; i < msg.sArr.size(); i += 2)
 					{
-						QuarantineListBox->Items->Add(msclr::interop::marshal_as<String^>(msg.sArr.at(i + 1)) + "\t" + msclr::interop::marshal_as<String^>(msg.sArr.at(i)));
-					}			
+						if (!QuarantineListBox->Items->Contains(msclr::interop::marshal_as<String^>(msg.sArr.at(i + 1)) + "\t" + msclr::interop::marshal_as<String^>(msg.sArr.at(i))))
+							QuarantineListBox->Items->Add(msclr::interop::marshal_as<String^>(msg.sArr.at(i + 1)) + "\t" + msclr::interop::marshal_as<String^>(msg.sArr.at(i)));
+					}
+				}
 				break;
 			}
 		   case COMMAND::START: {
@@ -1090,9 +1099,7 @@ namespace Client {
 		   case COMMAND::STOP: {
 			   btnBrowseFile->Enabled = true;
 			   btnBrowseFolder->Enabled = true;
-			   btnMoveToQuarantine->Enabled = true;
-			   btnDelete->Enabled = true;
-			   btnDeleteFromQuarantine->Enabled = true;
+			   btnStartScan->Enabled = true;
 			   progressBar1->Value = 0;
 			   txtScanRes->Clear();
 			   MessageBox::Show("Сканирование остановлено\r\nКоличество просканированных файлов: " + msg.nArr.at(0) + "\r\nУгроз: " + msg.nArr.at(1), "Информация", MessageBoxButtons::OK, MessageBoxIcon::Information);
@@ -1101,19 +1108,20 @@ namespace Client {
 		   case COMMAND::SCAN_RESULT: {
 			   btnBrowseFile->Enabled = true;
 			   btnBrowseFolder->Enabled = true;
-			   btnMoveToQuarantine->Enabled = true;
-			   btnDelete->Enabled = true;
-			   btnDeleteFromQuarantine->Enabled = true;
+			   btnStartScan->Enabled = true;
+			   //progressBar1->Value = 0;
 			   txtScanRes->AppendText("\r\nКоличество просканированных файлов: " + msg.nArr.at(0) + "\r\nУгроз: " + msg.nArr.at(1) + "\r\n");
 			   MessageBox::Show("Сканирование успешно завершилось!\r\nКоличество просканированных файлов: " + msg.nArr.at(0) + "\r\nУгроз: " + msg.nArr.at(1), "Информация", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			   break;
 		   }
 		   case COMMAND::SCHEDULE_SCAN_RESULT: {
+			   //progressBar2->Value = 0;
 			   txtScheduleScanRes->AppendText("\r\nКоличество просканированных файлов: " + msg.nArr.at(0) + "\r\nУгроз: " + msg.nArr.at(1) + "\r\n");
 			   MessageBox::Show("Запланированное сканирование успешно завершилось!\r\nКоличество просканированных файлов: " + msg.nArr.at(0) + "\r\nУгроз: " + msg.nArr.at(1), "Информация", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			   break;
 		   }
 		   case COMMAND::MONITORING_RESULT: {
+			   //progressBar3->Value = 0;
 			   txtMonitorRes->AppendText("\r\nКоличество просканированных файлов: " + msg.nArr.at(0) + "\r\nУгроз: " + msg.nArr.at(1) + "\r\n");
 			   MessageBox::Show("Содержимое папки было изменено, папка успешно просканирована\r\nКоличество просканированных файлов: " + msg.nArr.at(0) + "\r\nУгроз: " + msg.nArr.at(1), "Информация", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			   break;
@@ -1138,9 +1146,7 @@ namespace Client {
 		}
 		btnBrowseFile->Enabled = false;
 		btnBrowseFolder->Enabled = false;
-		btnMoveToQuarantine->Enabled = false;
-		btnDelete->Enabled = false;
-		btnDeleteFromQuarantine->Enabled = false;
+		btnStartScan->Enabled = false;
 		txtScanRes->Clear();
 		progressBar1->Value = 0;
 		message startScanMsg;
@@ -1324,6 +1330,8 @@ namespace Client {
 		}
 
 		StartService(schService, NULL, NULL);
+
+		MessageBox::Show("Сервис запущен", "Информация", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 
 	private: System::Void btnStopService_Click(System::Object^ sender, System::EventArgs^ e)
@@ -1335,10 +1343,9 @@ namespace Client {
 
 	private: System::Void ClientForm_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e)
 	{
-		/*FlushFileBuffers(pipeForSend);
+		FlushFileBuffers(pipeForSend);
 		DisconnectNamedPipe(pipeForSend);
-		CloseHandle(pipeForSend);
-		CloseHandle(pipeForRead);*/
+		//CloseHandle(pipeForSend);
 	}
 };
 }
