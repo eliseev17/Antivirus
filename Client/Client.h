@@ -4,11 +4,9 @@
 #include "IPC.h"
 #include <sstream>
 #include <msclr/marshal_cppstd.h>
-
+#include "PipeNamesBuffsizesPaths.h"
 //msclr::interop::marshal_as<std::string>(mPathBox->Text);
 //msclr::interop::marshal_as<String^>(el));
-
-#define PIPE_BUFSIZE 1024
 
 HANDLE pipeForSend = NULL;
 HANDLE pipeForRead = NULL;
@@ -862,7 +860,7 @@ namespace Client {
 	private: bool createPipeForRead()
 	{
 		pipeForRead = CreateNamedPipe(
-			L"\\\\.\\pipe\\secondPipe",             // имя канала 
+			PIPE_SERVICE_TO_CLIENT_NAME,             // имя канала 
 			PIPE_ACCESS_DUPLEX,       // чтение/запись доступ 
 			PIPE_TYPE_MESSAGE |       // тип сообщения каналу 
 			PIPE_READMODE_MESSAGE |   // режим чтения сообщений 
@@ -889,10 +887,10 @@ namespace Client {
 	{
 		pipeForSend = NULL;
 		CloseHandle(pipeForSend);
-		TCHAR pipename[22] = L"\\\\.\\pipe\\firstPipe";
+
 		if (pipeForSend == NULL)
 			pipeForSend = CreateFile(
-				pipename,   // pipe name 
+				PIPE_CLIENT_TO_SERVICE_NAME,   // pipe name 
 				GENERIC_READ |  // read and write access 
 				GENERIC_WRITE,
 				0,              // no sharing 
@@ -1317,7 +1315,7 @@ namespace Client {
 
 		SC_HANDLE schService = OpenService(
 			schSCManager,         // SCM database 
-			L"AntimalwareService",            // name of service 
+			L"MyAntimalwareService",            // name of service 
 			SERVICE_START |
 			SERVICE_QUERY_STATUS |
 			SERVICE_ENUMERATE_DEPENDENTS);

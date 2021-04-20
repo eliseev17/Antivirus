@@ -1,4 +1,5 @@
 #include "Monitoring.h"
+#include "PipeNamesBuffsizesPaths.h"
 
 bool Monitoring::shouldStop = false;
 
@@ -56,7 +57,7 @@ message Monitoring::scanDirectory(const std::string& path, HANDLE pipe)
 	result.cmd = COMMAND::SET_MONITORING;
 	Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
 	result.nArr.clear();
-	Database db = Database("D:\\AntimalwareDatabase\\AntimalwareDatabase.db");
+	Database db = Database(DATABASE_PATH);
 	size_t virusCounter = 0;
 	size_t filesCounter = 0;
 	for (auto& p : fs::recursive_directory_iterator(path.data()))

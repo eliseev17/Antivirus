@@ -13,7 +13,6 @@ class Database
 {
 public:
     Database(const char* filePath);
-    Database();
     Database(const char* filePath, std::shared_ptr<InformationStorage> infoStorage);
 
 private:

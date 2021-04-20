@@ -13,11 +13,6 @@ Database::Database(const char* filePath, std::shared_ptr<InformationStorage> inf
     createTablesForInfo();
 }
 
-//Database::Database(std::shared_ptr<InformationStorage> infoStorage)
-//{
-//    createTablesForInfo();
-//}
-
 int Database::callback(void* NotUsed, int argc, char** argv, char** azColName)
 {
     int i;
@@ -209,14 +204,16 @@ bool Database::findSign(std::string signature)
 
 size_t Database::findSignInPartOfBuf(std::string buf, size_t &rowNumber)
 {
+    size_t findRes = -1;
     std::string temp (sizeof(uint64_t), 0);
     for (auto &e: data)
     {       
         memcpy(temp.data(), &SIGN_PREFIX.at(e.second), sizeof(uint64_t));
-        if (buf.find(temp) != std::string::npos)
+        findRes = buf.find(temp);
+        if (findRes != std::string::npos)
         {
             rowNumber = e.second;
-            return buf.find(temp);
+            return findRes;
         }
     }
     return -1;

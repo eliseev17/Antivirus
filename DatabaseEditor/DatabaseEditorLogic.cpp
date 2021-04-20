@@ -1,4 +1,5 @@
 #include "DatabaseEditorLogic.h"
+#include "PipeNamesBuffsizesPaths.h"
 
 void DatabaseEditorLogic::MarshalString(String^ s, std::string& os) {
 	using namespace Runtime::InteropServices;
@@ -33,6 +34,9 @@ DataTable^ DatabaseEditorLogic::fillDataTable(SQLiteConnection^ database) {
 			table->Columns->Add(column);
 		}
 
+		std::string strPrefix(sizeof(uint64_t), 0);
+		uint64_t intPrefix;
+
 		//Пробегаем по каждой записи
 		while (reader->Read()) {
 			//Заполняем строчку таблицы
@@ -40,6 +44,13 @@ DataTable^ DatabaseEditorLogic::fillDataTable(SQLiteConnection^ database) {
 			//В каждой записи пробегаем по всем столбцам
 			for (int i = 0; i < reader->FieldCount; i++) {
 				//Добавляем значение столбца в row
+				if (i == 3)
+				{
+					intPrefix = Convert::ToInt64(reader->GetValue(i)->ToString());
+					memcpy(strPrefix.data(), &intPrefix, sizeof(uint64_t));
+					row[nameColumns->at(i)] = msclr::interop::marshal_as<String^>(strPrefix);
+					continue;
+				}				
 				row[nameColumns->at(i)] = reader->GetValue(i)->ToString();
 				reader->GetValue(i)->ToString();
 			}
@@ -55,10 +66,9 @@ DataTable^ DatabaseEditorLogic::fillDataTable(SQLiteConnection^ database) {
 
 void DatabaseEditorLogic::addRecord(SQLiteConnection^ database, String^ malwareName, String^ inputSignature, String^ offsetBegin, String^ offsetEnd) {
 	SHA256 sha256;
-	std::string signaturePrefix, signature;
+	std::string signature = msclr::interop::marshal_as<std::string>(inputSignature);
+	std::string signaturePrefix = msclr::interop::marshal_as<std::string>(inputSignature->Substring(0, 8));
 	uint64_t intSignature;
-	MarshalString(inputSignature, signature);
-	MarshalString(inputSignature->Substring(0, 8), signaturePrefix);
 	memcpy(&intSignature, signaturePrefix.c_str(), sizeof(uint64_t));
 	//std::string ABOBA(sizeof(uint64_t), 0); memcpy(ABOBA.data(), &intSignature, sizeof(uint64_t));
 	SQLiteCommand^ cmdInsertValue = database->CreateCommand();
@@ -106,7 +116,7 @@ void DatabaseEditorLogic::openDatabase(SQLiteConnection^ database)
 {
 	try
 	{
-		database->ConnectionString = "Data Source=\"./../AntimalwareDatabase.db\"";
+		database->ConnectionString = "Data Source=\"" + DATABASE_PATH + "\"";
 		database->Open();
 	}
 	catch (Exception^ e)

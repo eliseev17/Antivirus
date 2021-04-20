@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="IPC.h" />
+    <ClInclude Include="PipeNamesBuffsizesPaths.h" />
     <ClInclude Include="SHA256.h" />
   </ItemGroup>
   <ItemGroup>

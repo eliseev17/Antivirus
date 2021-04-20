@@ -61,6 +61,10 @@ namespace DatabaseEditor {
 #pragma region Windows Form Designer generated code
 		void InitializeComponent(void)
 		{
+			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle1 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle2 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle3 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle4 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			this->openFD = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
 			this->btnViewDatabase = (gcnew System::Windows::Forms::Button());
@@ -94,26 +98,74 @@ namespace DatabaseEditor {
 			// 
 			// dataGridView1
 			// 
+			dataGridViewCellStyle1->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(80)), static_cast<System::Int32>(static_cast<System::Byte>(80)),
+				static_cast<System::Int32>(static_cast<System::Byte>(80)));
+			dataGridViewCellStyle1->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)),
+				static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)));
+			dataGridViewCellStyle1->SelectionBackColor = System::Drawing::Color::Khaki;
+			dataGridViewCellStyle1->SelectionForeColor = System::Drawing::Color::Black;
+			this->dataGridView1->AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
 			this->dataGridView1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->dataGridView1->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::Fill;
-			this->dataGridView1->BackgroundColor = System::Drawing::Color::WhiteSmoke;
+			this->dataGridView1->BackgroundColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(80)),
+				static_cast<System::Int32>(static_cast<System::Byte>(80)), static_cast<System::Int32>(static_cast<System::Byte>(80)));
+			dataGridViewCellStyle2->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
+			dataGridViewCellStyle2->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(60)), static_cast<System::Int32>(static_cast<System::Byte>(60)),
+				static_cast<System::Int32>(static_cast<System::Byte>(60)));
+			dataGridViewCellStyle2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			dataGridViewCellStyle2->ForeColor = System::Drawing::Color::White;
+			dataGridViewCellStyle2->SelectionBackColor = System::Drawing::Color::Khaki;
+			dataGridViewCellStyle2->SelectionForeColor = System::Drawing::Color::Black;
+			dataGridViewCellStyle2->WrapMode = System::Windows::Forms::DataGridViewTriState::True;
+			this->dataGridView1->ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			dataGridViewCellStyle3->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
+			dataGridViewCellStyle3->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(60)), static_cast<System::Int32>(static_cast<System::Byte>(60)),
+				static_cast<System::Int32>(static_cast<System::Byte>(60)));
+			dataGridViewCellStyle3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			dataGridViewCellStyle3->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)),
+				static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)));
+			dataGridViewCellStyle3->SelectionBackColor = System::Drawing::Color::Khaki;
+			dataGridViewCellStyle3->SelectionForeColor = System::Drawing::Color::Black;
+			dataGridViewCellStyle3->WrapMode = System::Windows::Forms::DataGridViewTriState::False;
+			this->dataGridView1->DefaultCellStyle = dataGridViewCellStyle3;
+			this->dataGridView1->GridColor = System::Drawing::Color::White;
 			this->dataGridView1->Location = System::Drawing::Point(12, 83);
 			this->dataGridView1->Name = L"dataGridView1";
 			this->dataGridView1->ReadOnly = true;
+			dataGridViewCellStyle4->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
+			dataGridViewCellStyle4->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(60)), static_cast<System::Int32>(static_cast<System::Byte>(60)),
+				static_cast<System::Int32>(static_cast<System::Byte>(60)));
+			dataGridViewCellStyle4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			dataGridViewCellStyle4->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)),
+				static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)));
+			dataGridViewCellStyle4->SelectionBackColor = System::Drawing::Color::Khaki;
+			dataGridViewCellStyle4->SelectionForeColor = System::Drawing::Color::Black;
+			dataGridViewCellStyle4->WrapMode = System::Windows::Forms::DataGridViewTriState::True;
+			this->dataGridView1->RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
 			this->dataGridView1->RowHeadersWidth = 51;
+			this->dataGridView1->RowTemplate->DefaultCellStyle->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(80)),
+				static_cast<System::Int32>(static_cast<System::Byte>(80)), static_cast<System::Int32>(static_cast<System::Byte>(80)));
+			this->dataGridView1->RowTemplate->DefaultCellStyle->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)),
+				static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)));
+			this->dataGridView1->RowTemplate->DefaultCellStyle->SelectionBackColor = System::Drawing::Color::Khaki;
+			this->dataGridView1->RowTemplate->DefaultCellStyle->SelectionForeColor = System::Drawing::Color::Black;
 			this->dataGridView1->RowTemplate->Height = 24;
 			this->dataGridView1->Size = System::Drawing::Size(1193, 413);
 			this->dataGridView1->TabIndex = 4;
 			// 
 			// btnViewDatabase
 			// 
-			this->btnViewDatabase->BackColor = System::Drawing::Color::Lavender;
+			this->btnViewDatabase->BackColor = System::Drawing::Color::Khaki;
 			this->btnViewDatabase->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->btnViewDatabase->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
+			this->btnViewDatabase->ForeColor = System::Drawing::Color::Black;
 			this->btnViewDatabase->Location = System::Drawing::Point(6, 25);
 			this->btnViewDatabase->Name = L"btnViewDatabase";
 			this->btnViewDatabase->Size = System::Drawing::Size(210, 30);
@@ -126,7 +178,7 @@ namespace DatabaseEditor {
 			// 
 			this->btnRemove->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			this->btnRemove->AutoSize = true;
-			this->btnRemove->BackColor = System::Drawing::Color::MistyRose;
+			this->btnRemove->BackColor = System::Drawing::Color::Salmon;
 			this->btnRemove->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->btnRemove->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
@@ -140,10 +192,11 @@ namespace DatabaseEditor {
 			// 
 			// btnCreateDatabase
 			// 
-			this->btnCreateDatabase->BackColor = System::Drawing::Color::Linen;
+			this->btnCreateDatabase->BackColor = System::Drawing::Color::Khaki;
 			this->btnCreateDatabase->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->btnCreateDatabase->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
+			this->btnCreateDatabase->ForeColor = System::Drawing::Color::Black;
 			this->btnCreateDatabase->Location = System::Drawing::Point(6, 25);
 			this->btnCreateDatabase->Name = L"btnCreateDatabase";
 			this->btnCreateDatabase->Size = System::Drawing::Size(210, 30);
@@ -158,6 +211,7 @@ namespace DatabaseEditor {
 			this->groupBox1->Controls->Add(this->label6);
 			this->groupBox1->Controls->Add(this->btnCreateDatabase);
 			this->groupBox1->Controls->Add(this->txtNewDBName);
+			this->groupBox1->ForeColor = System::Drawing::Color::White;
 			this->groupBox1->Location = System::Drawing::Point(827, 12);
 			this->groupBox1->Name = L"groupBox1";
 			this->groupBox1->Size = System::Drawing::Size(378, 65);
@@ -168,6 +222,7 @@ namespace DatabaseEditor {
 			// label6
 			// 
 			this->label6->AutoSize = true;
+			this->label6->ForeColor = System::Drawing::Color::White;
 			this->label6->Location = System::Drawing::Point(219, 11);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(119, 17);
@@ -176,8 +231,13 @@ namespace DatabaseEditor {
 			// 
 			// txtNewDBName
 			// 
+			this->txtNewDBName->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(80)), static_cast<System::Int32>(static_cast<System::Byte>(80)),
+				static_cast<System::Int32>(static_cast<System::Byte>(80)));
+			this->txtNewDBName->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->txtNewDBName->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
+			this->txtNewDBName->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
+				static_cast<System::Int32>(static_cast<System::Byte>(224)));
 			this->txtNewDBName->Location = System::Drawing::Point(222, 31);
 			this->txtNewDBName->Name = L"txtNewDBName";
 			this->txtNewDBName->Size = System::Drawing::Size(150, 24);
@@ -190,6 +250,7 @@ namespace DatabaseEditor {
 			this->groupBox2->Controls->Add(this->label5);
 			this->groupBox2->Controls->Add(this->txtDatabaseFilePath);
 			this->groupBox2->Controls->Add(this->btnViewDatabase);
+			this->groupBox2->ForeColor = System::Drawing::Color::White;
 			this->groupBox2->Location = System::Drawing::Point(12, 12);
 			this->groupBox2->Name = L"groupBox2";
 			this->groupBox2->Size = System::Drawing::Size(653, 65);
@@ -200,6 +261,7 @@ namespace DatabaseEditor {
 			// label5
 			// 
 			this->label5->AutoSize = true;
+			this->label5->ForeColor = System::Drawing::Color::White;
 			this->label5->Location = System::Drawing::Point(219, 11);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(113, 17);
@@ -208,8 +270,13 @@ namespace DatabaseEditor {
 			// 
 			// txtDatabaseFilePath
 			// 
+			this->txtDatabaseFilePath->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(80)),
+				static_cast<System::Int32>(static_cast<System::Byte>(80)), static_cast<System::Int32>(static_cast<System::Byte>(80)));
+			this->txtDatabaseFilePath->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->txtDatabaseFilePath->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
+			this->txtDatabaseFilePath->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)),
+				static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)));
 			this->txtDatabaseFilePath->Location = System::Drawing::Point(222, 31);
 			this->txtDatabaseFilePath->Name = L"txtDatabaseFilePath";
 			this->txtDatabaseFilePath->ReadOnly = true;
@@ -219,6 +286,11 @@ namespace DatabaseEditor {
 			// txtOffsetEnd
 			// 
 			this->txtOffsetEnd->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->txtOffsetEnd->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(80)), static_cast<System::Int32>(static_cast<System::Byte>(80)),
+				static_cast<System::Int32>(static_cast<System::Byte>(80)));
+			this->txtOffsetEnd->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->txtOffsetEnd->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
+				static_cast<System::Int32>(static_cast<System::Byte>(224)));
 			this->txtOffsetEnd->Location = System::Drawing::Point(496, 519);
 			this->txtOffsetEnd->Multiline = true;
 			this->txtOffsetEnd->Name = L"txtOffsetEnd";
@@ -228,7 +300,7 @@ namespace DatabaseEditor {
 			// btnAdd
 			// 
 			this->btnAdd->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
-			this->btnAdd->BackColor = System::Drawing::Color::Honeydew;
+			this->btnAdd->BackColor = System::Drawing::Color::PaleGreen;
 			this->btnAdd->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->btnAdd->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
@@ -243,8 +315,13 @@ namespace DatabaseEditor {
 			// txtSignature
 			// 
 			this->txtSignature->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->txtSignature->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(80)), static_cast<System::Int32>(static_cast<System::Byte>(80)),
+				static_cast<System::Int32>(static_cast<System::Byte>(80)));
+			this->txtSignature->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->txtSignature->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
+			this->txtSignature->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
+				static_cast<System::Int32>(static_cast<System::Byte>(224)));
 			this->txtSignature->Location = System::Drawing::Point(140, 519);
 			this->txtSignature->Multiline = true;
 			this->txtSignature->Name = L"txtSignature";
@@ -254,8 +331,13 @@ namespace DatabaseEditor {
 			// txtOffsetBegin
 			// 
 			this->txtOffsetBegin->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->txtOffsetBegin->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(80)), static_cast<System::Int32>(static_cast<System::Byte>(80)),
+				static_cast<System::Int32>(static_cast<System::Byte>(80)));
+			this->txtOffsetBegin->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->txtOffsetBegin->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
+			this->txtOffsetBegin->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
+				static_cast<System::Int32>(static_cast<System::Byte>(224)));
 			this->txtOffsetBegin->Location = System::Drawing::Point(365, 519);
 			this->txtOffsetBegin->Multiline = true;
 			this->txtOffsetBegin->Name = L"txtOffsetBegin";
@@ -265,8 +347,13 @@ namespace DatabaseEditor {
 			// txtName
 			// 
 			this->txtName->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->txtName->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(80)), static_cast<System::Int32>(static_cast<System::Byte>(80)),
+				static_cast<System::Int32>(static_cast<System::Byte>(80)));
+			this->txtName->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->txtName->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
+			this->txtName->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
+				static_cast<System::Int32>(static_cast<System::Byte>(224)));
 			this->txtName->Location = System::Drawing::Point(12, 519);
 			this->txtName->Multiline = true;
 			this->txtName->Name = L"txtName";
@@ -277,6 +364,7 @@ namespace DatabaseEditor {
 			// 
 			this->label1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->label1->AutoSize = true;
+			this->label1->ForeColor = System::Drawing::Color::White;
 			this->label1->Location = System::Drawing::Point(362, 499);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(130, 17);
@@ -287,6 +375,7 @@ namespace DatabaseEditor {
 			// 
 			this->label2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->label2->AutoSize = true;
+			this->label2->ForeColor = System::Drawing::Color::White;
 			this->label2->Location = System::Drawing::Point(493, 499);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(113, 17);
@@ -297,6 +386,7 @@ namespace DatabaseEditor {
 			// 
 			this->label3->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->label3->AutoSize = true;
+			this->label3->ForeColor = System::Drawing::Color::White;
 			this->label3->Location = System::Drawing::Point(137, 499);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(80, 17);
@@ -307,17 +397,19 @@ namespace DatabaseEditor {
 			// 
 			this->label4->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->label4->AutoSize = true;
+			this->label4->ForeColor = System::Drawing::Color::White;
 			this->label4->Location = System::Drawing::Point(9, 499);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(86, 17);
+			this->label4->Size = System::Drawing::Size(113, 17);
 			this->label4->TabIndex = 14;
-			this->label4->Text = L"Имя файла:";
+			this->label4->Text = L"Имя вредоноса:";
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::Color::White;
+			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(70)), static_cast<System::Int32>(static_cast<System::Byte>(70)),
+				static_cast<System::Int32>(static_cast<System::Byte>(70)));
 			this->ClientSize = System::Drawing::Size(1217, 558);
 			this->Controls->Add(this->label4);
 			this->Controls->Add(this->label3);
@@ -359,6 +451,7 @@ namespace DatabaseEditor {
 	private: void openDatabase()
 	{		
 		dataGridView1->DataSource = DatabaseEditorLogic::fillDataTable(database);
+		setColumnsWidth();
 	}
 
 	private: void openDatabaseOnFormLoad()
@@ -367,6 +460,7 @@ namespace DatabaseEditor {
 		DatabaseEditorLogic::openDatabase(database);
 		txtDatabaseFilePath->Text = database->FileName;
 		dataGridView1->DataSource = DatabaseEditorLogic::fillDataTable(database);
+		setColumnsWidth();
 	}
 
 	private: System::Void btnViewDatabase_Click(System::Object^ sender, System::EventArgs^ e)
@@ -383,7 +477,7 @@ namespace DatabaseEditor {
 
 	private: System::Void btnCreateDatabase_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		String^ fileName = "./../" + txtNewDBName->Text + ".db";
+		String^ fileName = "C:\\Users\\elisi\\Documents\\MyAntimalware\\AntimalwareDatabase\\" + txtNewDBName->Text + ".db";
 		if (File::Exists(fileName))
 		{
 			MessageBox::Show("Файл " + fileName + " уже Существует", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -396,6 +490,7 @@ namespace DatabaseEditor {
 		{
 			DatabaseEditorLogic::createDatabase(database, fileName);
 			dataGridView1->DataSource = DatabaseEditorLogic::fillDataTable(database);
+			setColumnsWidth();
 			txtDatabaseFilePath->Text = database->FileName;
 			MessageBox::Show("База \"" + database->FileName + "\" успешно создана!", "Создание базы", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
@@ -415,6 +510,7 @@ namespace DatabaseEditor {
 		{
 			DatabaseEditorLogic::addRecord(database, txtName->Text, txtSignature->Text, txtOffsetBegin->Text, txtOffsetEnd->Text);
 			dataGridView1->DataSource = DatabaseEditorLogic::fillDataTable(database);
+			setColumnsWidth();
 		}
 		catch (Exception^ e)
 		{
@@ -431,6 +527,7 @@ namespace DatabaseEditor {
 		{
 			DatabaseEditorLogic::deleteRecord(database, malwareName);
 			dataGridView1->DataSource = DatabaseEditorLogic::fillDataTable(database);
+			setColumnsWidth();
 		}
 		catch (Exception^ e)
 		{
@@ -448,6 +545,24 @@ namespace DatabaseEditor {
 		Thread^ thread = gcnew Thread(gcnew ThreadStart(this, &MyForm::openDatabaseOnFormLoad));
 		thread->IsBackground = true;
 		thread->Start();
+	}
+
+	private: void setColumnsWidth()
+	{
+		dataGridView1->Columns[4]->MinimumWidth = 300;
+		dataGridView1->Columns[4]->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+		dataGridView1->Columns[0]->Width = 70;
+		dataGridView1->Columns[0]->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+		dataGridView1->Columns[2]->Width = 140;
+		dataGridView1->Columns[2]->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+		dataGridView1->Columns[3]->Width = 130;
+		dataGridView1->Columns[3]->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+		dataGridView1->Columns[5]->Width = 145;
+		dataGridView1->Columns[5]->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+		dataGridView1->Columns[6]->Width = 125;
+		dataGridView1->Columns[6]->Resizable = System::Windows::Forms::DataGridViewTriState::False;
+
+		dataGridView1->EnableHeadersVisualStyles = false;
 	}
 };
 }

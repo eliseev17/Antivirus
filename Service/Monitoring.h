@@ -9,7 +9,6 @@ class Monitoring : public Scanner
 	static bool shouldStop;
 
 public:	
-	Monitoring();
 	Monitoring(std::shared_ptr<InformationStorage> infoStorage);
 	void start(std::string path, HANDLE pipe);
 	void stop();

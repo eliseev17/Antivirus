@@ -58,33 +58,3 @@ void InformationStorage::deleteFromQuar(std::string quarPath, std::string quarNa
 		quarNames.erase(std::find_if(quarNames.begin(), quarNames.end(), [&](std::string& el) {return el == quarName; }));
 	}
 }
-
-//void InformationStorage::deleteThreat(std::string threatPath)
-//{
-//	bool isExist = false;
-//	for (size_t i = 0; i < threatPaths.size(); i++)
-//	{
-//		if (threatPaths.at(i) == threatPath)
-//			isExist = true;
-//	}
-//	if (!isExist)
-//	{
-//		threatPaths.push_back(threatPath);
-//		threatNames.push_back(threatName);
-//	}
-//}
-//
-//void InformationStorage::deleteQuar(std::string quarPath)
-//{
-//	bool isExist = false;
-//	for (size_t i = 0; i < quarPaths.size(); i++)
-//	{
-//		if (quarPaths.at(i) == quarPath)
-//			isExist = true;
-//	}
-//	if (!isExist)
-//	{
-//		quarPaths.push_back(quarPath);
-//		quarNames.push_back(quarName);
-//	}
-//}

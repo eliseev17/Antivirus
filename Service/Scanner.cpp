@@ -1,4 +1,5 @@
 #include "Scanner.h"
+#include "PipeNamesBuffsizesPaths.h"
 
 bool Scanner::shouldStop = false;
 
@@ -17,7 +18,7 @@ message Scanner::scanDirectory(const std::string& path, HANDLE pipe)
 	result.cmd = COMMAND::START;
 	Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
 	result.nArr.clear();
-	Database db = Database("D:\\AntimalwareDatabase\\AntimalwareDatabase.db");
+	Database db = Database(DATABASE_PATH);
 	size_t virusCounter = 0;
 	size_t filesCounter = 0;
 	for (auto& p : fs::recursive_directory_iterator(path.data()))
@@ -163,7 +164,7 @@ void Scanner::startScan(const std::string& path, HANDLE pipe)
 		scanRes.cmd = COMMAND::START;
 		scanRes.nArr.emplace_back(1);
 		Messenger::sendMessage(pipe, PIPE_BUFSIZE, scanRes);
-		Database db = Database("D:\\AntimalwareDatabase\\AntimalwareDatabase.db");
+		Database db = Database(DATABASE_PATH);
 		scanRes.cmd = COMMAND::SCAN_RESULT;
 		if (scanFile(path, pipe, db))
 			scanRes.nArr.emplace_back(1);
@@ -180,7 +181,7 @@ void Scanner::stopScan()
 
 std::string Scanner::unzip(const std::string& zipPath)
 {
-	const std::string inputFolder = "D:\\unpackedFiles\\";
+	const std::string inputFolder = UNPACKING_PATH;
 	std::filesystem::path zipFileName(zipPath);
 	zipFileName = zipFileName.replace_extension("").filename();
 	std::string pathToZip = inputFolder + zipFileName.string();

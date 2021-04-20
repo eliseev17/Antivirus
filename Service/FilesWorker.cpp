@@ -1,4 +1,5 @@
 #include "FilesWorker.h"
+#include "PipeNamesBuffsizesPaths.h"
 #include <filesystem>
 #include <fstream>
 
@@ -13,7 +14,7 @@ void FilesWorker::moveToQuarantine(message newMessage)
     std::string quarName = newMessage.sArr.at(1);
     infoStorage->addQuar(filePath, quarName);
     std::filesystem::path filename = filePath;
-    std::string destPath = "D:\\Quarantine\\" + filename.filename().string();
+    std::string destPath = QUARANTINE_PATH + filename.filename().string();
     std::filesystem::copy_file(filePath, destPath);
     std::filesystem::remove(filePath);
     std::ifstream fs(destPath, std::ios::binary);
@@ -33,7 +34,7 @@ void FilesWorker::deleteFromQuarantine(message newMessage)
     std::string quarName = newMessage.sArr.at(1);
     infoStorage->deleteFromQuar(filePath, quarName);
     std::filesystem::path filename = filePath;
-    std::string destPath = "D:\\Quarantine\\" + filename.filename().string();
+    std::string destPath = QUARANTINE_PATH + filename.filename().string();
     std::filesystem::copy_file(destPath, filePath);
     std::filesystem::remove(destPath);
     std::ifstream fs(filePath, std::ios::binary);

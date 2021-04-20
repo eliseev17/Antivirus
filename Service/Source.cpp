@@ -19,7 +19,7 @@ int wmain(int argc, wchar_t* argv[])
     }
     else
     {
-        ServiceManager sm{ u"AntimalwareService", reinterpret_cast<char16_t*>(argv[0]) };
+        ServiceManager sm{ u"MyAntimalwareService", reinterpret_cast<char16_t*>(argv[0]) };
         if (wcscmp(argv[argc - 1], L"--install") == 0) {
             sm.InstallService();
         }

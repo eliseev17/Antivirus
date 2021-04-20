@@ -1,3 +1,4 @@
+#include <msclr/marshal_cppstd.h>
 #include <cliext/vector>
 #include "SHA256.h"
 

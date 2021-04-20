@@ -15,8 +15,6 @@
 
 #define MZHEADER 0x5a4d
 #define ZIPHEADER 0x04034b50
-#define BUFSIZE 8128
-#define PIPE_BUFSIZE 1024
 
 class Scanner
 {

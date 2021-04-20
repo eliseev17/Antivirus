@@ -1,4 +1,5 @@
 #include "ScheduledScanner.h"
+#include "PipeNamesBuffsizesPaths.h"
 
 bool ScheduledScanner::shouldCancel = false;
 
@@ -59,7 +60,7 @@ message ScheduledScanner::scanDirectory(const std::string& path, HANDLE pipe)
 	result.cmd = COMMAND::SCHEDULE_START;
 	Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
 	result.nArr.clear();
-	Database db = Database("D:\\AntimalwareDatabase\\AntimalwareDatabase.db");
+	Database db = Database(DATABASE_PATH);
 	size_t virusCounter = 0;
 	size_t filesCounter = 0;
 	for (auto& p : fs::recursive_directory_iterator(path.data()))
