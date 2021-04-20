@@ -9,7 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Library", "Library\Library.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DatabaseEditor", "DatabaseEditor\DatabaseEditor.vcxproj", "{C1959F83-E4BE-4E5E-A447-55A227791CE7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Service", "..\Server\Service.vcxproj", "{8C377588-16B9-4C95-8E37-8F3DF546D1AF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Service", "Service\Service.vcxproj", "{8C377588-16B9-4C95-8E37-8F3DF546D1AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

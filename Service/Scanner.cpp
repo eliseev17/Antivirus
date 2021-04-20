@@ -2,7 +2,12 @@
 
 bool Scanner::shouldStop = false;
 
-message Scanner::scanDirectory(const std::string& path, HANDLE pipe, InformationStorage& infoStorage)
+Scanner::Scanner(std::shared_ptr<InformationStorage> infoStorage)
+{
+	this->infoStorage = infoStorage;
+}
+
+message Scanner::scanDirectory(const std::string& path, HANDLE pipe)
 {
 	message result;
 	namespace fs = std::filesystem;
@@ -12,7 +17,7 @@ message Scanner::scanDirectory(const std::string& path, HANDLE pipe, Information
 	result.cmd = COMMAND::START;
 	Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
 	result.nArr.clear();
-	Database db = Database("./../AntimalwareDatabase.db");
+	Database db = Database("D:\\AntimalwareDatabase\\AntimalwareDatabase.db");
 	size_t virusCounter = 0;
 	size_t filesCounter = 0;
 	for (auto& p : fs::recursive_directory_iterator(path.data()))
@@ -31,7 +36,7 @@ message Scanner::scanDirectory(const std::string& path, HANDLE pipe, Information
 
 		filesCounter++;
 
-		if (scanFile(p.path().string(), pipe, infoStorage, db))
+		if (scanFile(p.path().string(), pipe, db))
 			virusCounter++;
 	}
 	result.cmd = COMMAND::SCAN_RESULT;
@@ -41,7 +46,7 @@ message Scanner::scanDirectory(const std::string& path, HANDLE pipe, Information
 	return result;
 }
 
-bool Scanner::scanFile(const std::string& path, HANDLE pipe, InformationStorage& infoStorage, Database db)
+bool Scanner::scanFile(const std::string& path, HANDLE pipe, Database db)
 {
 	message result;	
 	result.cmd = COMMAND::START;
@@ -63,7 +68,7 @@ bool Scanner::scanFile(const std::string& path, HANDLE pipe, InformationStorage&
 		if (res)
 		{
 			isVirus = true;
-			infoStorage.addThreat(path, "Найден вредонос: " + db.MW_NAME.at(res));
+			infoStorage->addThreat(path, "Найден вредонос: " + db.MW_NAME.at(res));
 			result.sArr.emplace_back("Найден вредонос: " + db.MW_NAME.at(res));
 		}
 		else
@@ -75,7 +80,7 @@ bool Scanner::scanFile(const std::string& path, HANDLE pipe, InformationStorage&
 		if (res)
 		{
 			isVirus = true;
-			infoStorage.addThreat(path, "Найден вредонос: опасный ZIP");
+			infoStorage->addThreat(path, "Найден вредонос: опасный ZIP");
 			result.sArr.emplace_back("Найден вредонос: опасный ZIP");
 		}
 		else
@@ -85,13 +90,13 @@ bool Scanner::scanFile(const std::string& path, HANDLE pipe, InformationStorage&
 		result.sArr.emplace_back("Не исполняемый");
 	Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
 	result.sArr.clear();
-	std::cout << path << '\n';	
+	//std::cout << path << '\n';	
 	return isVirus;
 }
 
 size_t Scanner::scanZip(std::string inputPath, Database db)
 {
-	std::cout << "Распаковка: " << inputPath << std::endl;
+	//std::cout << "Распаковка: " << inputPath << std::endl;
 	std::string unzipPath = unzip(inputPath);
 	size_t virusCounter = 0, zipVirCounter = 0;
 	namespace fs = std::filesystem;
@@ -144,12 +149,12 @@ size_t Scanner::scanExe(std::string path, Database db)
 	return resultPosition;
 }
 
-void Scanner::startScan(const std::string& path, HANDLE pipe, InformationStorage& infoStorage)
+void Scanner::startScan(const std::string& path, HANDLE pipe)
 {
 	shouldStop = false;
 	if (std::filesystem::is_directory(path))
 	{
-		message scanResult = scanDirectory(path, pipe, infoStorage);
+		message scanResult = scanDirectory(path, pipe);
 		Messenger::sendMessage(pipe, PIPE_BUFSIZE, scanResult);
 	}
 	else
@@ -158,9 +163,9 @@ void Scanner::startScan(const std::string& path, HANDLE pipe, InformationStorage
 		scanRes.cmd = COMMAND::START;
 		scanRes.nArr.emplace_back(1);
 		Messenger::sendMessage(pipe, PIPE_BUFSIZE, scanRes);
-		Database db = Database("./../AntimalwareDatabase.db");
+		Database db = Database("D:\\AntimalwareDatabase\\AntimalwareDatabase.db");
 		scanRes.cmd = COMMAND::SCAN_RESULT;
-		if (scanFile(path, pipe, infoStorage, db))
+		if (scanFile(path, pipe, db))
 			scanRes.nArr.emplace_back(1);
 		else
 			scanRes.nArr.emplace_back(0);

@@ -2,11 +2,16 @@
 #include <filesystem>
 #include <fstream>
 
-void FilesWorker::moveToQuarantine(message newMessage, InformationStorage& infoStorage)
+FilesWorker::FilesWorker(std::shared_ptr<InformationStorage> infoStorage)
+{
+    this->infoStorage = infoStorage;
+}
+
+void FilesWorker::moveToQuarantine(message newMessage)
 {
     std::string filePath = newMessage.sArr.at(0);
     std::string quarName = newMessage.sArr.at(1);
-    infoStorage.addQuar(filePath, quarName);
+    infoStorage->addQuar(filePath, quarName);
     std::filesystem::path filename = filePath;
     std::string destPath = "D:\\Quarantine\\" + filename.filename().string();
     std::filesystem::copy_file(filePath, destPath);
@@ -22,11 +27,11 @@ void FilesWorker::moveToQuarantine(message newMessage, InformationStorage& infoS
     fi.close();
 }
 
-void FilesWorker::deleteFromQuarantine(message newMessage, InformationStorage& infoStorage)
+void FilesWorker::deleteFromQuarantine(message newMessage)
 {
     std::string filePath = newMessage.sArr.at(0);
     std::string quarName = newMessage.sArr.at(1);
-    infoStorage.deleteFromQuar(filePath, quarName);
+    infoStorage->deleteFromQuar(filePath, quarName);
     std::filesystem::path filename = filePath;
     std::string destPath = "D:\\Quarantine\\" + filename.filename().string();
     std::filesystem::copy_file(destPath, filePath);
@@ -42,15 +47,15 @@ void FilesWorker::deleteFromQuarantine(message newMessage, InformationStorage& i
     fi.close();
 }
 
-void FilesWorker::deleteThreat(message newMessage, InformationStorage& infoStorage)
+void FilesWorker::deleteThreat(message newMessage)
 {
     std::string filePath = newMessage.sArr.at(0);
     std::string threatName = newMessage.sArr.at(1);
-    for (size_t i = 0; i < infoStorage.threatPaths.size(); i++)
+    for (size_t i = 0; i < infoStorage->threatPaths.size(); i++)
     {
-        if (infoStorage.threatPaths.at(i) == filePath)
+        if (infoStorage->threatPaths.at(i) == filePath)
         {
-            infoStorage.deleteThreat(filePath, threatName);
+            infoStorage->deleteThreat(filePath, threatName);
             std::filesystem::remove(filePath);
             return;
         }

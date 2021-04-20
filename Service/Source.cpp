@@ -10,7 +10,8 @@ int wmain(int argc, wchar_t* argv[])
     std::wcout.imbue(std::locale(".866"));
     std::wcerr.imbue(std::locale(".866"));
     std::wcin.imbue(std::locale(".866"));
-
+    //AntimalwareService antimalwareSrvice;
+    //antimalwareSrvice.Start();
     if (argc - 1 == 0)
     {
         AntimalwareServiceFactory serviceFactory;

@@ -6,16 +6,17 @@ Database::Database(const char* filePath)
     update();
 }
 
-Database::Database()
-{
-
-}
-
-Database::Database(const char* filePath, InformationStorage infoStorage)
+Database::Database(const char* filePath, std::shared_ptr<InformationStorage> infoStorage)
 {
     this->filePath = (char*)filePath;
-    createTablesForInfo(infoStorage);
+    this->infoStorage = infoStorage;
+    createTablesForInfo();
 }
+
+//Database::Database(std::shared_ptr<InformationStorage> infoStorage)
+//{
+//    createTablesForInfo();
+//}
 
 int Database::callback(void* NotUsed, int argc, char** argv, char** azColName)
 {
@@ -28,9 +29,13 @@ int Database::callback(void* NotUsed, int argc, char** argv, char** azColName)
     return 0;
 }
 
-InformationStorage Database::getInfo(const char* filePath)
+void Database::getInfo(const char* filePath, std::shared_ptr <InformationStorage> infoStorage)
 {
-    InformationStorage storage;
+    infoStorage->quarNames.clear();
+    infoStorage->quarPaths.clear();
+    infoStorage->threatNames.clear();
+    infoStorage->threatPaths.clear();
+
     sqlite3_stmt* stmt;
     sqlite3* db = 0; // хэндл объекта соединение к БД
     const char* SQL = "SELECT * FROM THREATS;";
@@ -40,8 +45,8 @@ InformationStorage Database::getInfo(const char* filePath)
         {
             while (sqlite3_step(stmt) == SQLITE_ROW) //пока в бд есть данные происходит считывание
             {
-                storage.threatPaths.push_back((char*)sqlite3_column_text(stmt, 0));
-                storage.threatNames.push_back((char*)sqlite3_column_text(stmt, 1));
+                infoStorage->threatPaths.push_back((char*)sqlite3_column_text(stmt, 0));
+                infoStorage->threatNames.push_back((char*)sqlite3_column_text(stmt, 1));
             }
         }
     }
@@ -53,13 +58,13 @@ InformationStorage Database::getInfo(const char* filePath)
         {
             while (sqlite3_step(stmt) == SQLITE_ROW) //пока в бд есть данные происходит считывание
             {
-                storage.quarPaths.push_back((char*)sqlite3_column_text(stmt, 0));
-                storage.quarNames.push_back((char*)sqlite3_column_text(stmt, 1));
+                infoStorage->quarPaths.push_back((char*)sqlite3_column_text(stmt, 0));
+                infoStorage->quarNames.push_back((char*)sqlite3_column_text(stmt, 1));
             }
         }
     }
     sqlite3_close(db);
-    return storage;
+    return;
 }
 
 void Database::dropTable()
@@ -83,7 +88,7 @@ void Database::dropTable()
     sqlite3_close(db);
 }
 
-void Database::createTablesForInfo(InformationStorage infoStorage)
+void Database::createTablesForInfo()
 {
     //TODO DROP TABLE
     dropTable();
@@ -97,12 +102,12 @@ void Database::createTablesForInfo(InformationStorage infoStorage)
     sqlite3_prepare_v2(db, createQuery.c_str(), createQuery.size(), &createStmt, NULL);
     if (sqlite3_step(createStmt) != SQLITE_DONE) return;//cout << "Didn't Create Table!" << endl;
 
-    for (size_t i = 0; i < infoStorage.threatPaths.size(); i++)
+    for (size_t i = 0; i < infoStorage->threatPaths.size(); i++)
     { 
         std::string insertQuery = "INSERT INTO THREATS (THREAT_PATH, THREAT_NAME) VALUES (\"";
-        insertQuery += infoStorage.threatPaths.at(i).data();
+        insertQuery += infoStorage->threatPaths.at(i).data();
         insertQuery += "\", \"";
-        insertQuery += infoStorage.threatNames.at(i).data();
+        insertQuery += infoStorage->threatNames.at(i).data();
         insertQuery += "\");";
         const char* temp = insertQuery.c_str();
         sqlite3_stmt* insertStmt;
@@ -119,12 +124,12 @@ void Database::createTablesForInfo(InformationStorage infoStorage)
     sqlite3_prepare_v2(db1, createQuery.c_str(), createQuery.size(), &createStmt1, NULL);
     if (sqlite3_step(createStmt1) != SQLITE_DONE) return;//cout << "Didn't Create Table!" << endl;
 
-    for (size_t i = 0; i < infoStorage.quarPaths.size(); i++)
+    for (size_t i = 0; i < infoStorage->quarPaths.size(); i++)
     {
         std::string insertQuery = "INSERT INTO QUARANTINE (QUAR_PATH, QUAR_NAME) VALUES (\"";
-        insertQuery += infoStorage.quarPaths.at(i).data();
+        insertQuery += infoStorage->quarPaths.at(i).data();
         insertQuery += "\", \"";
-        insertQuery += infoStorage.quarNames.at(i).data();
+        insertQuery += infoStorage->quarNames.at(i).data();
         insertQuery += "\");";
         const char* temp = insertQuery.c_str();
         sqlite3_stmt* insertStmt;

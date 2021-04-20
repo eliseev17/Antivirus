@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <iostream>
 #include <string>
+#include <memory>
 #include <vector>
 #include <unordered_map>
 #include "SHA256.h"
@@ -13,15 +14,15 @@ class Database
 public:
     Database(const char* filePath);
     Database();
-    Database(const char* filePath, InformationStorage infoStorage);
+    Database(const char* filePath, std::shared_ptr<InformationStorage> infoStorage);
 
 private:
-    //sqlite3* db;
     char* filePath;
     static int callback(void* NotUsed, int argc, char** argv, char** azColName);
     SHA256 shaGen;
-    void createTablesForInfo(InformationStorage infoStorage);
     void dropTable();
+    void createTablesForInfo();
+    std::shared_ptr<InformationStorage> infoStorage;
 
 public:
     std::unordered_map<uint64_t, uint64_t> data;
@@ -39,6 +40,6 @@ public:
     bool findSign(uint64_t signature);
     void doSELECTforExample();
     size_t findSignInPartOfBuf(std::string buf, size_t& rowNumber);
-    static InformationStorage getInfo(const char* filePath);
+    static void getInfo(const char* filePath, std::shared_ptr <InformationStorage> infoStorage);
 };
 

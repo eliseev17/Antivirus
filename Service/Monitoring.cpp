@@ -2,11 +2,12 @@
 
 bool Monitoring::shouldStop = false;
 
-Monitoring::Monitoring()
+Monitoring::Monitoring(std::shared_ptr<InformationStorage> infoStorage) : Scanner(infoStorage)
 {
+	this->infoStorage = infoStorage;
 }
 
-void Monitoring::start(std::string path, HANDLE pipe, InformationStorage& infoStorage)
+void Monitoring::start(std::string path, HANDLE pipe)
 {
 	shouldStop = false;
 	changeHandle = FindFirstChangeNotificationA(path.c_str(), TRUE, FILE_NOTIFY_CHANGE_FILE_NAME);
@@ -14,7 +15,7 @@ void Monitoring::start(std::string path, HANDLE pipe, InformationStorage& infoSt
 	{
 		return;
 	}
-	run(path, pipe, infoStorage);
+	run(path, pipe);
 }
 
 void Monitoring::stop()
@@ -22,7 +23,7 @@ void Monitoring::stop()
 	shouldStop = true;
 }
 
-void Monitoring::run(std::string path, HANDLE pipe, InformationStorage &infoStorage)
+void Monitoring::run(std::string path, HANDLE pipe)
 {
 	while (TRUE)
 	{
@@ -33,19 +34,19 @@ void Monitoring::run(std::string path, HANDLE pipe, InformationStorage &infoStor
 			return;
 		}
 		Sleep(100);
-		startScan(path, pipe, infoStorage);
+		startScan(path, pipe);
 		CloseHandle(changeHandle);
 		changeHandle = FindFirstChangeNotificationA(path.c_str(), TRUE, FILE_NOTIFY_CHANGE_FILE_NAME);
 	}
 }
 
-void Monitoring::startScan(std::string path, HANDLE pipe, InformationStorage& infoStorage)
+void Monitoring::startScan(std::string path, HANDLE pipe)
 {
-	message scanResult = scanDirectory(path, pipe, infoStorage);
+	message scanResult = scanDirectory(path, pipe);
 	Messenger::sendMessage(pipe, PIPE_BUFSIZE, scanResult);
 }
 
-message Monitoring::scanDirectory(const std::string& path, HANDLE pipe, InformationStorage& infoStorage)
+message Monitoring::scanDirectory(const std::string& path, HANDLE pipe)
 {
 	message result;
 	namespace fs = std::filesystem;
@@ -55,7 +56,7 @@ message Monitoring::scanDirectory(const std::string& path, HANDLE pipe, Informat
 	result.cmd = COMMAND::SET_MONITORING;
 	Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
 	result.nArr.clear();
-	Database db = Database("./../AntimalwareDatabase.db");
+	Database db = Database("D:\\AntimalwareDatabase\\AntimalwareDatabase.db");
 	size_t virusCounter = 0;
 	size_t filesCounter = 0;
 	for (auto& p : fs::recursive_directory_iterator(path.data()))
@@ -64,7 +65,7 @@ message Monitoring::scanDirectory(const std::string& path, HANDLE pipe, Informat
 			continue;
 		filesCounter++;
 
-		if (scanFile(p.path().string(), pipe, infoStorage, db))
+		if (scanFile(p.path().string(), pipe, db))
 			virusCounter++;
 	}
 	result.cmd = COMMAND::MONITORING_RESULT;
@@ -74,7 +75,7 @@ message Monitoring::scanDirectory(const std::string& path, HANDLE pipe, Informat
 	return result;
 }
 
-bool Monitoring::scanFile(const std::string& path, HANDLE pipe, InformationStorage& infoStorage, Database db)
+bool Monitoring::scanFile(const std::string& path, HANDLE pipe, Database db)
 {
 	message result;
 	result.cmd = COMMAND::SET_MONITORING;
@@ -96,7 +97,7 @@ bool Monitoring::scanFile(const std::string& path, HANDLE pipe, InformationStora
 		if (res)
 		{
 			isVirus = true;
-			infoStorage.addThreat(path, "Найден вредонос: " + db.MW_NAME.at(res));
+			infoStorage->addThreat(path, "Найден вредонос: " + db.MW_NAME.at(res));
 			result.sArr.emplace_back("Найден вредонос: " + db.MW_NAME.at(res));
 		}
 		else
@@ -108,7 +109,7 @@ bool Monitoring::scanFile(const std::string& path, HANDLE pipe, InformationStora
 		if (res)
 		{
 			isVirus = true;
-			infoStorage.addThreat(path, "Найден вредонос: опасный ZIP");
+			infoStorage->addThreat(path, "Найден вредонос: опасный ZIP");
 			result.sArr.emplace_back("Найден вредонос: опасный ZIP");
 		}
 		else
@@ -118,6 +119,6 @@ bool Monitoring::scanFile(const std::string& path, HANDLE pipe, InformationStora
 		result.sArr.emplace_back("Не исполняемый");
 	Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
 	result.sArr.clear();
-	std::cout << path << '\n';
+	//std::cout << path << '\n';
 	return isVirus;
 }

@@ -2,12 +2,17 @@
 
 bool ScheduledScanner::shouldCancel = false;
 
+ScheduledScanner::ScheduledScanner(std::shared_ptr<InformationStorage> infoStorage) : Scanner(infoStorage)
+{
+	this->infoStorage = infoStorage;
+}
+
 void ScheduledScanner::cancelScheduledScan()
 {
 	shouldCancel = true;
 }
 
-void ScheduledScanner::startScheduledScan(HANDLE pipe, message scanMsg, InformationStorage& infoStorage)
+void ScheduledScanner::startScheduledScan(HANDLE pipe, message scanMsg)
 {
 	shouldCancel = false;
 	std::string path = scanMsg.sArr.at(0);
@@ -30,7 +35,7 @@ void ScheduledScanner::startScheduledScan(HANDLE pipe, message scanMsg, Informat
 		timeinfo = localtime(&rawtime);
 		if (timeinfo->tm_min == minute && timeinfo->tm_hour == hour)
 		{
-			scanResult = scanDirectory(path, pipe, infoStorage);
+			scanResult = scanDirectory(path, pipe);
 			scanMutex.unlock();
 			Messenger::sendMessage(pipe, PIPE_BUFSIZE, scanResult);
 			break;
@@ -44,7 +49,7 @@ void ScheduledScanner::startScheduledScan(HANDLE pipe, message scanMsg, Informat
 	}
 }
 
-message ScheduledScanner::scanDirectory(const std::string& path, HANDLE pipe, InformationStorage& infoStorage)
+message ScheduledScanner::scanDirectory(const std::string& path, HANDLE pipe)
 {
 	message result;
 	namespace fs = std::filesystem;
@@ -54,7 +59,7 @@ message ScheduledScanner::scanDirectory(const std::string& path, HANDLE pipe, In
 	result.cmd = COMMAND::SCHEDULE_START;
 	Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
 	result.nArr.clear();
-	Database db = Database("./../AntimalwareDatabase.db");
+	Database db = Database("D:\\AntimalwareDatabase\\AntimalwareDatabase.db");
 	size_t virusCounter = 0;
 	size_t filesCounter = 0;
 	for (auto& p : fs::recursive_directory_iterator(path.data()))
@@ -63,7 +68,7 @@ message ScheduledScanner::scanDirectory(const std::string& path, HANDLE pipe, In
 			continue;
 		filesCounter++;
 
-		if (scanFile(p.path().string(), pipe, infoStorage, db))
+		if (scanFile(p.path().string(), pipe, db))
 			virusCounter++;
 	}
 	result.cmd = COMMAND::SCHEDULE_SCAN_RESULT;
@@ -73,7 +78,7 @@ message ScheduledScanner::scanDirectory(const std::string& path, HANDLE pipe, In
 	return result;
 }
 
-bool ScheduledScanner::scanFile(const std::string& path, HANDLE pipe, InformationStorage& infoStorage, Database db)
+bool ScheduledScanner::scanFile(const std::string& path, HANDLE pipe, Database db)
 {
 	message result;
 	result.cmd = COMMAND::SCHEDULE_START;
@@ -95,7 +100,7 @@ bool ScheduledScanner::scanFile(const std::string& path, HANDLE pipe, Informatio
 		if (res)
 		{
 			isVirus = true;
-			infoStorage.addThreat(path, "Найден вредонос: " + db.MW_NAME.at(res));
+			infoStorage->addThreat(path, "Найден вредонос: " + db.MW_NAME.at(res));
 			result.sArr.emplace_back("Найден вредонос: " + db.MW_NAME.at(res));
 		}
 		else
@@ -107,7 +112,7 @@ bool ScheduledScanner::scanFile(const std::string& path, HANDLE pipe, Informatio
 		if (res)
 		{
 			isVirus = true;
-			infoStorage.addThreat(path, "Найден вредонос: опасный ZIP");
+			infoStorage->addThreat(path, "Найден вредонос: опасный ZIP");
 			result.sArr.emplace_back("Найден вредонос: опасный ZIP");
 		}
 		else
@@ -117,6 +122,6 @@ bool ScheduledScanner::scanFile(const std::string& path, HANDLE pipe, Informatio
 		result.sArr.emplace_back("Не исполняемый");
 	Messenger::sendMessage(pipe, PIPE_BUFSIZE, result);
 	result.sArr.clear();
-	std::cout << path << '\n';
+	//std::cout << path << '\n';
 	return isVirus;
 }

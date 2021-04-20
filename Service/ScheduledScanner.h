@@ -12,6 +12,7 @@
 #include <zip.h>
 #include <filesystem>
 #include <fstream>
+#include <memory>
 #include <thread>
 #include <time.h>
 #include "InformationStorage.h"
@@ -22,10 +23,12 @@ class ScheduledScanner : public Scanner
 {
 	static bool shouldCancel;
 public:
+	ScheduledScanner(std::shared_ptr<InformationStorage> infoStorage);
 	void cancelScheduledScan();
-	void startScheduledScan(HANDLE pipe, message scanMsg, InformationStorage& infoStorage);
+	void startScheduledScan(HANDLE pipe, message scanMsg);
 private:
-	message scanDirectory(const std::string& path, HANDLE pipe, InformationStorage& infoStorage);
-	bool scanFile(const std::string& path, HANDLE pipe, InformationStorage& infoStorage, Database db);
+	message scanDirectory(const std::string& path, HANDLE pipe);
+	bool scanFile(const std::string& path, HANDLE pipe, Database db);
 	std::mutex scanMutex;
+	std::shared_ptr<InformationStorage> infoStorage;
 };

@@ -1,5 +1,9 @@
 #include "InformationStorage.h"
 
+InformationStorage::InformationStorage()
+{
+}
+
 void InformationStorage::addThreat(std::string threatPath, std::string threatName)
 {
 	bool isExist = false;

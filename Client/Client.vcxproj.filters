@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\ClientAntivirus\ClientAntivirus\app.config" />
+    <None Include="..\Service\Service.vcxproj" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">

@@ -18,6 +18,31 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AntimalwareService.cpp" />
+    <ClCompile Include="Database.cpp" />
+    <ClCompile Include="FilesWorker.cpp" />
+    <ClCompile Include="InformationStorage.cpp" />
+    <ClCompile Include="Monitoring.cpp" />
+    <ClCompile Include="Scanner.cpp" />
+    <ClCompile Include="ScheduledScanner.cpp" />
+    <ClCompile Include="Service.cpp" />
+    <ClCompile Include="ServiceInitializer.cpp" />
+    <ClCompile Include="ServiceManager.cpp" />
+    <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AntimalwareService.h" />
+    <ClInclude Include="Database.h" />
+    <ClInclude Include="FilesWorker.h" />
+    <ClInclude Include="InformationStorage.h" />
+    <ClInclude Include="Monitoring.h" />
+    <ClInclude Include="Scanner.h" />
+    <ClInclude Include="ScheduledScanner.h" />
+    <ClInclude Include="Service.h" />
+    <ClInclude Include="ServiceInitializer.h" />
+    <ClInclude Include="ServiceManager.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -119,7 +144,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Users\elisi\source\repos\Antivirus\Library;C:\Users\elisi\Documents\Visual Studio 2019\SQLite\sqlite-amalgamation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -128,7 +153,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\elisi\Documents\Visual Studio 2019\SQLite\.dll;C:\Users\elisi\source\repos\Antivirus\$(IntDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Library.lib;sqlite3.dll;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Library.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -148,31 +173,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\Server\Database.h" />
-    <ClInclude Include="..\Server\InformationStorage.h" />
-    <ClInclude Include="..\Server\Monitoring.h" />
-    <ClInclude Include="..\Server\Scanner.h" />
-    <ClInclude Include="..\Server\ScheduledScanner.h" />
-    <ClInclude Include="AntimalwareService.h" />
-    <ClInclude Include="FilesWorker.h" />
-    <ClInclude Include="Service.h" />
-    <ClInclude Include="ServiceInitializer.h" />
-    <ClInclude Include="ServiceManager.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\Server\Database.cpp" />
-    <ClCompile Include="..\Server\InformationStorage.cpp" />
-    <ClCompile Include="..\Server\Monitoring.cpp" />
-    <ClCompile Include="..\Server\Scanner.cpp" />
-    <ClCompile Include="..\Server\ScheduledScanner.cpp" />
-    <ClCompile Include="AntimalwareService.cpp" />
-    <ClCompile Include="FilesWorker.cpp" />
-    <ClCompile Include="Service.cpp" />
-    <ClCompile Include="ServiceInitializer.cpp" />
-    <ClCompile Include="ServiceManager.cpp" />
-    <ClCompile Include="Source.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -1,4 +1,6 @@
 #include "Service.h"
+#include <fstream>
+
 namespace ServiceLib::ServiceManagement
 {
 	void WINAPI ControlHandler(DWORD request);

@@ -129,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="..\ClientAntivirus\ClientAntivirus\app.config" />
+    <None Include="..\Service\Service.vcxproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
